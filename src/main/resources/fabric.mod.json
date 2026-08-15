@@ -34,6 +34,7 @@
 		"koalalib": ">=1.2.14"
 	},
 	"suggests": {
-		"another-mod": "*"
+		"another-mod": "*",
+		"naturescompass": "*"
 	}
 }

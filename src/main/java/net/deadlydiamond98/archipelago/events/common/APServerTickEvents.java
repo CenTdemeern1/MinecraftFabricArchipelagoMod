@@ -1,6 +1,8 @@
 package net.deadlydiamond98.archipelago.events.common;
 
 import net.deadlydiamond98.archipelago.archipelago.items.type.AbstractAPItem;
+import net.deadlydiamond98.archipelago.common.world.APPersistentState;
+import net.deadlydiamond98.archipelago.compat.ArchipelagoCompat;
 import net.deadlydiamond98.archipelago.networking.s2c.SendArchipelagoInfoS2CPacket;
 import net.deadlydiamond98.archipelago.networking.s2c.UpdatePlayerAbilitiesS2CPacket;
 import net.deadlydiamond98.archipelago.util.APAdvancementHelper;
@@ -13,6 +15,7 @@ public class APServerTickEvents {
             if (APServerPlayConnectionEvents.syncData) {
                 APServerPlayConnectionEvents.syncData = false;
                 APAdvancementHelper.resyncAdvancements();
+                ArchipelagoCompat.applyBiomeRestriction(server.getOverworld(), APPersistentState.get().getUnlockedBiomes());
                 server.getPlayerManager().getPlayerList().forEach(player -> {
                     UpdatePlayerAbilitiesS2CPacket.send(player);
                     SendArchipelagoInfoS2CPacket.send(player);

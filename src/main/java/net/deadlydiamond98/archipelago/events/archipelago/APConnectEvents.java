@@ -9,6 +9,7 @@ import net.deadlydiamond98.archipelago.archipelago.Archipelago;
 import net.deadlydiamond98.archipelago.archipelago.items.type.AbstractAPItem;
 import net.deadlydiamond98.archipelago.archipelago.locations.APLocations;
 import net.deadlydiamond98.archipelago.common.world.APPersistentState;
+import net.deadlydiamond98.archipelago.compat.ArchipelagoCompat;
 import net.deadlydiamond98.archipelago.networking.s2c.SendArchipelagoInfoS2CPacket;
 import net.deadlydiamond98.archipelago.networking.s2c.SendUncheckedItemsS2CPacket;
 import net.deadlydiamond98.archipelago.util.APAdvancementHelper;
@@ -109,6 +110,7 @@ public class APConnectEvents {
             });
             APServerUtil.runOnServer(server -> {
                 APAdvancementHelper.resyncAdvancements();
+                ArchipelagoCompat.applyBiomeRestriction(server.getOverworld(), state.getUnlockedBiomes());
             });
         }
     }

@@ -107,7 +107,9 @@ public class APConnectEvents {
                     }
                 });
             });
-            APAdvancementHelper.resyncAdvancements();
+            APServerUtil.runOnServer(server -> {
+                APAdvancementHelper.resyncAdvancements();
+            });
         }
     }
 }

@@ -85,7 +85,7 @@ public class APConnectEvents {
 
                 // Sync Some Data
                 server.getPlayerManager().getPlayerList().forEach(player -> {
-                    server.getPlayerManager().getAdvancementTracker(player).reload(server.getAdvancementLoader());
+                    //server.getPlayerManager().getAdvancementTracker(player).reload(server.getAdvancementLoader());
                     SendArchipelagoInfoS2CPacket.send(player);
                     SendUncheckedItemsS2CPacket.send(player);
                 });

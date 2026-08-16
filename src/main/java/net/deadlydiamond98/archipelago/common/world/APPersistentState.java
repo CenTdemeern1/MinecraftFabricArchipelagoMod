@@ -8,8 +8,6 @@ import net.deadlydiamond98.archipelago.networking.s2c.SendUncheckedItemsS2CPacke
 import net.deadlydiamond98.archipelago.networking.s2c.UpdatePlayerAbilitiesS2CPacket;
 import net.deadlydiamond98.archipelago.util.APAdvancementHelper;
 import net.deadlydiamond98.archipelago.util.APServerUtil;
-import net.minecraft.item.Item;
-import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.*;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;

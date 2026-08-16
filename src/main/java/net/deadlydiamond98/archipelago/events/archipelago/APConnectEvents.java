@@ -57,6 +57,12 @@ public class APConnectEvents {
                 }
             });
 
+            if (slot.logic_difficulty_options.contains("Natures Compass Logic")) {
+                if (!APMod.isModLoaded("naturescompass")) {
+                    missing.add("naturescompass");
+                }
+            }
+
             APServerUtil.sendMessage(Text.translatable("archipelago.mods_enabled", slot.enabled_mods.toString()).setStyle(style));
 
             if (!missing.isEmpty()) {

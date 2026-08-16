@@ -101,6 +101,16 @@ public class Archipelago extends Client {
         return slot != null && slot.time_saving_options.contains(setting);
     }
 
+    public static boolean hasLogicSetting(String setting) {
+        Archipelago.MCSlotData slot = Archipelago.getSlotData();
+        return slot != null && slot.logic_difficulty_options.contains(setting);
+    }
+
+    public static boolean slotData() {
+        Archipelago.MCSlotData slot = Archipelago.getSlotData();
+        return slot != null;
+    }
+
     public static class MCSlotData {
         public String world_version;
 
@@ -122,6 +132,7 @@ public class Archipelago extends Client {
         public Set<String> possible_randomized_abilities;
 
         public Set<String> time_saving_options;
+        public Set<String> logic_difficulty_options;
 
         public Set<String> enabled_mods;
 

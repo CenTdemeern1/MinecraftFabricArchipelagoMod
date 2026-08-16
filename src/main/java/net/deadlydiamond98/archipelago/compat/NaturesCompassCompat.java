@@ -24,4 +24,8 @@ public class NaturesCompassCompat {
         }
         NaturesCompassConfig.biomeBlacklist = blacklist;
     }
+
+    public static void unrestrict() {
+        NaturesCompassConfig.biomeBlacklist = new ArrayList<String>();
+    }
 }

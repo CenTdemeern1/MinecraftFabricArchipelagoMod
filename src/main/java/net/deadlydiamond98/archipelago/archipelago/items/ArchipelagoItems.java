@@ -5,6 +5,7 @@ import net.deadlydiamond98.archipelago.archipelago.items.type.filler.*;
 import net.deadlydiamond98.archipelago.archipelago.items.type.progression.RubyAPItem;
 import net.deadlydiamond98.archipelago.archipelago.items.type.traps.*;
 import net.deadlydiamond98.archipelago.init.APEffects;
+import net.deadlydiamond98.archipelago.init.APItems;
 import net.deadlydiamond98.archipelago.init.APTags;
 import net.minecraft.block.Blocks;
 import net.minecraft.enchantment.Enchantments;
@@ -109,6 +110,7 @@ public class ArchipelagoItems {
         // Misc
         ITEMS.put("Saddle", new ItemstackAPItem(Items.SADDLE, 1));
         ITEMS.put("Random Dye", new ItemTagAPItem(APTags.DYES, 3));
+        ITEMS.put("Totem of Meteorology", new ItemstackAPItem(APItems.TOTEM_OF_METEOROLOGY, 1));
 
         // Traps ///////////////////////////////////////////////////////////////////////////////////////////////////////
         ITEMS.put("Reverse Controls Trap", new StatusEffectTrap(APEffects.CONFUSION, 1200));

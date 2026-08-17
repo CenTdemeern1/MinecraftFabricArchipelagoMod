@@ -215,6 +215,13 @@ public class SavedArchipelagoItems {
         );
         ArchipelagoItems.ITEMS.put("Village (Explorer's Compass)", new StructureUnlockAPItem(village));
 
+        Set<String> ruins = Set.of(
+            "minecraft:ocean_ruin_cold",
+            "minecraft:ocean_ruin_warm",
+            "minecraft:trail_ruins"
+        );
+        ArchipelagoItems.ITEMS.put("Ruins (Explorer's Compass)", new StructureUnlockAPItem(ruins));
+
         Set<String> ruinedPortal = Set.of(
             "minecraft:ruined_portal",
             "minecraft:ruined_portal_desert",
@@ -225,6 +232,12 @@ public class SavedArchipelagoItems {
             "minecraft:ruined_portal_swamp"
         );
         ArchipelagoItems.ITEMS.put("Ruined Portal (Explorer's Compass)", new StructureUnlockAPItem(ruinedPortal));
+
+        Set<String> shipwreck = Set.of(
+            "minecraft:shipwreck",
+            "minecraft:shipwreck_beached"
+        );
+        ArchipelagoItems.ITEMS.put("Shipwreck (Explorer's Compass)", new StructureUnlockAPItem(shipwreck));
 
         Set<String> buriedTreasure = Set.of(
             "minecraft:buried_treasure"
@@ -252,10 +265,20 @@ public class SavedArchipelagoItems {
         );
         ArchipelagoItems.ITEMS.put("Desert Pyramid (Explorer's Compass)", new StructureUnlockAPItem(desertPyramid));
 
+        Set<String> junglePyramid = Set.of(
+            "minecraft:jungle_pyramid"
+        );
+        ArchipelagoItems.ITEMS.put("Jungle Pyramid (Explorer's Compass)", new StructureUnlockAPItem(junglePyramid));
+
         Set<String> pillagerOutpost = Set.of(
             "minecraft:pillager_outpost"
         );
         ArchipelagoItems.ITEMS.put("Pillager Outpost (Explorer's Compass)", new StructureUnlockAPItem(pillagerOutpost));
+
+        Set<String> fortress = Set.of(
+            "minecraft:fortress"
+        );
+        ArchipelagoItems.ITEMS.put("Fortress (Explorer's Compass)", new StructureUnlockAPItem(fortress));
 
         Set<String> bastionRemnant = Set.of(
             "minecraft:bastion_remnant"

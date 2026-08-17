@@ -9,9 +9,9 @@ import net.deadlydiamond98.archipelago.networking.s2c.UpdatePlayerAbilitiesS2CPa
 import net.deadlydiamond98.archipelago.util.APAdvancementHelper;
 import net.deadlydiamond98.archipelago.util.APServerUtil;
 import net.minecraft.nbt.*;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.world.PersistentState;
 import net.minecraft.world.PersistentStateManager;
-import net.minecraft.world.World;
 
 import java.util.*;
 
@@ -39,6 +39,8 @@ public class APPersistentState extends PersistentState implements IAbilityCheck 
     private final Set<Long> itemsanityIds = new HashSet<>();
     // Saves biomes that can be hinted with Nature's Compass
     private final Set<String> unlockedBiomes = new HashSet<>();
+    // Saves structures that can be hinted with Explorer's Compass
+    private final Set<String> unlockedStructures = new HashSet<>();
 
 //    private final Set<Item> collectedItems = new HashSet<>();
     private boolean hasKilledEnderDragon;
@@ -77,10 +79,21 @@ public class APPersistentState extends PersistentState implements IAbilityCheck 
         return unlockedBiomes;
     }
 
-    public void unlockBiomes(Set<String> biomes, World world) {
+    public void unlockBiomes(Set<String> biomes, ServerWorld world) {
         if (unlockedBiomes.addAll(biomes)) {
             markDirty();
             ArchipelagoCompat.applyBiomeRestriction(world, unlockedBiomes);
+        }
+    }
+
+    public Set<String> getUnlockedStructures() {
+        return unlockedStructures;
+    }
+
+    public void unlockStructures(Set<String> structures, ServerWorld world) {
+        if (unlockedStructures.addAll(structures)) {
+            markDirty();
+            ArchipelagoCompat.applyStructureRestriction(world, unlockedStructures);
         }
     }
 
@@ -210,6 +223,12 @@ public class APPersistentState extends PersistentState implements IAbilityCheck 
         }
         nbt.put("unlockedBiomes", unlockedBiomesList);
 
+        NbtList unlockedStructuresList = new NbtList();
+        for (String structure : this.unlockedStructures) {
+            unlockedStructuresList.add(NbtString.of(structure));
+        }
+        nbt.put("unlockedStructures", unlockedStructuresList);
+
         nbt.putBoolean("HasKilledEnderDragon", this.hasKilledEnderDragon);
         nbt.putBoolean("HasKilledWither", this.hasKilledWither);
         nbt.putInt("RubiesCollected", this.currentRubyCount);
@@ -256,6 +275,11 @@ public class APPersistentState extends PersistentState implements IAbilityCheck 
         NbtList unlockedBiomesList = nbt.getList("unlockedBiomes", NbtElement.STRING_TYPE);
         for (int i = 0; i < unlockedBiomesList.size(); i++) {
             states.unlockedBiomes.add(unlockedBiomesList.getString(i));
+        }
+
+        NbtList unlockedStructuresList = nbt.getList("unlockedStructures", NbtElement.STRING_TYPE);
+        for (int i = 0; i < unlockedStructuresList.size(); i++) {
+            states.unlockedStructures.add(unlockedStructuresList.getString(i));
         }
 
         states.hasKilledEnderDragon = nbt.getBoolean("HasKilledEnderDragon");

@@ -4,6 +4,7 @@ package net.deadlydiamond98.archipelago.archipelago.items;
 import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.items.type.progression.BiomeUnlockAPItem;
 import net.deadlydiamond98.archipelago.archipelago.items.type.progression.PersistantStateAPItem;
+import net.deadlydiamond98.archipelago.archipelago.items.type.progression.StructureUnlockAPItem;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 
 import java.util.*;
@@ -101,7 +102,7 @@ public class SavedArchipelagoItems {
             "minecraft:frozen_ocean",
             "minecraft:deep_frozen_ocean"
         );
-        ArchipelagoItems.ITEMS.put("Ocean Biomes", new BiomeUnlockAPItem(ocean));
+        ArchipelagoItems.ITEMS.put("Ocean Biomes (Nature's Compass)", new BiomeUnlockAPItem(ocean));
 
         Set<String> plains = Set.of(
             "minecraft:plains",
@@ -110,14 +111,14 @@ public class SavedArchipelagoItems {
             "minecraft:ice_spikes",
             "minecraft:mushroom_fields"
         );
-        ArchipelagoItems.ITEMS.put("Plains Biomes", new BiomeUnlockAPItem(plains));
+        ArchipelagoItems.ITEMS.put("Plains Biomes (Nature's Compass)", new BiomeUnlockAPItem(plains));
 
         Set<String> savanna = Set.of(
             "minecraft:savanna",
             "minecraft:savanna_plateau",
             "minecraft:windswept_savanna"
         );
-        ArchipelagoItems.ITEMS.put("Savanna Biomes", new BiomeUnlockAPItem(savanna));
+        ArchipelagoItems.ITEMS.put("Savanna Biomes (Nature's Compass)", new BiomeUnlockAPItem(savanna));
 
         Set<String> forest = Set.of(
             "minecraft:forest",
@@ -131,14 +132,14 @@ public class SavedArchipelagoItems {
             "minecraft:snowy_taiga",
             "minecraft:windswept_forest"
         );
-        ArchipelagoItems.ITEMS.put("Forest Biomes", new BiomeUnlockAPItem(forest));
+        ArchipelagoItems.ITEMS.put("Forest Biomes (Nature's Compass)", new BiomeUnlockAPItem(forest));
 
         Set<String> jungle = Set.of(
             "minecraft:jungle",
             "minecraft:sparse_jungle",
             "minecraft:bamboo_jungle"
         );
-        ArchipelagoItems.ITEMS.put("Jungle Biomes", new BiomeUnlockAPItem(jungle));
+        ArchipelagoItems.ITEMS.put("Jungle Biomes (Nature's Compass)", new BiomeUnlockAPItem(jungle));
 
         Set<String> wetland = Set.of(
             "minecraft:river",
@@ -149,14 +150,14 @@ public class SavedArchipelagoItems {
             "minecraft:swamp",
             "minecraft:mangrove_swamp"
         );
-        ArchipelagoItems.ITEMS.put("Wetland Biomes", new BiomeUnlockAPItem(wetland));
+        ArchipelagoItems.ITEMS.put("Wetland Biomes (Nature's Compass)", new BiomeUnlockAPItem(wetland));
 
         Set<String> mountain = Set.of(
             "minecraft:frozen_peaks",
             "minecraft:jagged_peaks",
             "minecraft:stony_peaks"
         );
-        ArchipelagoItems.ITEMS.put("Mountain Biomes", new BiomeUnlockAPItem(mountain));
+        ArchipelagoItems.ITEMS.put("Mountain Biomes (Nature's Compass)", new BiomeUnlockAPItem(mountain));
 
         Set<String> highland = Set.of(
             "minecraft:meadow",
@@ -166,7 +167,7 @@ public class SavedArchipelagoItems {
             "minecraft:windswept_hills",
             "minecraft:windswept_gravelly_hills"
         );
-        ArchipelagoItems.ITEMS.put("Highland Biomes", new BiomeUnlockAPItem(highland));
+        ArchipelagoItems.ITEMS.put("Highland Biomes (Nature's Compass)", new BiomeUnlockAPItem(highland));
 
         Set<String> arid = Set.of(
             "minecraft:desert",
@@ -174,14 +175,14 @@ public class SavedArchipelagoItems {
             "minecraft:eroded_badlands",
             "minecraft:wooded_badlands"
         );
-        ArchipelagoItems.ITEMS.put("Arid Biomes", new BiomeUnlockAPItem(arid));
+        ArchipelagoItems.ITEMS.put("Arid Biomes (Nature's Compass)", new BiomeUnlockAPItem(arid));
 
         Set<String> underground = Set.of(
             "minecraft:dripstone_caves",
             "minecraft:lush_caves",
             "minecraft:deep_dark"
         );
-        ArchipelagoItems.ITEMS.put("Underground Biomes", new BiomeUnlockAPItem(underground));
+        ArchipelagoItems.ITEMS.put("Underground Biomes (Nature's Compass)", new BiomeUnlockAPItem(underground));
 
         Set<String> nether = Set.of(
             "minecraft:nether_wastes",
@@ -190,7 +191,7 @@ public class SavedArchipelagoItems {
             "minecraft:soul_sand_valley",
             "minecraft:basalt_deltas"
         );
-        ArchipelagoItems.ITEMS.put("Nether Biomes", new BiomeUnlockAPItem(nether));
+        ArchipelagoItems.ITEMS.put("Nether Biomes (Nature's Compass)", new BiomeUnlockAPItem(nether));
 
         Set<String> end = Set.of(
             "minecraft:the_end",
@@ -199,7 +200,71 @@ public class SavedArchipelagoItems {
             "minecraft:small_end_islands",
             "minecraft:end_barrens"
         );
-        ArchipelagoItems.ITEMS.put("End Biomes", new BiomeUnlockAPItem(end));
+        ArchipelagoItems.ITEMS.put("End Biomes (Nature's Compass)", new BiomeUnlockAPItem(end));
+
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        // STRUCTURES //////////////////////////////////////////////////////////////////////////////////////////////////
+        ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        
+        Set<String> village = Set.of(
+            "minecraft:village_desert",
+            "minecraft:village_plains",
+            "minecraft:village_savanna",
+            "minecraft:village_snowy",
+            "minecraft:village_taiga"
+        );
+        ArchipelagoItems.ITEMS.put("Village (Explorer's Compass)", new StructureUnlockAPItem(village));
+
+        Set<String> ruinedPortal = Set.of(
+            "minecraft:ruined_portal",
+            "minecraft:ruined_portal_desert",
+            "minecraft:ruined_portal_jungle",
+            "minecraft:ruined_portal_mountain",
+            "minecraft:ruined_portal_nether",
+            "minecraft:ruined_portal_ocean",
+            "minecraft:ruined_portal_swamp"
+        );
+        ArchipelagoItems.ITEMS.put("Ruined Portal (Explorer's Compass)", new StructureUnlockAPItem(ruinedPortal));
+
+        Set<String> buriedTreasure = Set.of(
+            "minecraft:buried_treasure"
+        );
+        ArchipelagoItems.ITEMS.put("Buried Treasure (Explorer's Compass)", new StructureUnlockAPItem(buriedTreasure));
+
+        Set<String> monument = Set.of(
+            "minecraft:monument"
+        );
+        ArchipelagoItems.ITEMS.put("Monument (Explorer's Compass)", new StructureUnlockAPItem(monument));
+
+        Set<String> endCity = Set.of(
+            "minecraft:end_city"
+        );
+        ArchipelagoItems.ITEMS.put("End City (Explorer's Compass)", new StructureUnlockAPItem(endCity));
+
+        Set<String> desertPyramid = Set.of(
+            "minecraft:desert_pyramid"
+        );
+        ArchipelagoItems.ITEMS.put("Desert Pyramid (Explorer's Compass)", new StructureUnlockAPItem(desertPyramid));
+
+        Set<String> pillagerOutpost = Set.of(
+            "minecraft:pillager_outpost"
+        );
+        ArchipelagoItems.ITEMS.put("Pillager Outpost (Explorer's Compass)", new StructureUnlockAPItem(pillagerOutpost));
+
+        Set<String> bastionRemnant = Set.of(
+            "minecraft:bastion_remnant"
+        );
+        ArchipelagoItems.ITEMS.put("Bastion Remnant (Explorer's Compass)", new StructureUnlockAPItem(bastionRemnant));
+
+        Set<String> mansion = Set.of(
+            "minecraft:mansion"
+        );
+        ArchipelagoItems.ITEMS.put("Mansion (Explorer's Compass)", new StructureUnlockAPItem(mansion));
+
+        Set<String> ancientCity = Set.of(
+            "minecraft:ancient_city"
+        );
+        ArchipelagoItems.ITEMS.put("Ancient City (Explorer's Compass)", new StructureUnlockAPItem(ancientCity));
     }
 
     public static boolean hasAdvancedStorage() {

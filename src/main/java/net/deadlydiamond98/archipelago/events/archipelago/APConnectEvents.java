@@ -63,6 +63,12 @@ public class APConnectEvents {
                 }
             }
 
+            if (slot.logic_difficulty_options.contains("Explorers Compass Logic")) {
+                if (!APMod.isModLoaded("explorerscompass")) {
+                    missing.add("explorerscompass");
+                }
+            }
+
             APServerUtil.sendMessage(Text.translatable("archipelago.mods_enabled", slot.enabled_mods.toString()).setStyle(style));
 
             if (!missing.isEmpty()) {

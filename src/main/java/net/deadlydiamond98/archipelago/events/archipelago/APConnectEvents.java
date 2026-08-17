@@ -10,11 +10,14 @@ import net.deadlydiamond98.archipelago.archipelago.items.type.AbstractAPItem;
 import net.deadlydiamond98.archipelago.archipelago.locations.APLocations;
 import net.deadlydiamond98.archipelago.common.world.APPersistentState;
 import net.deadlydiamond98.archipelago.compat.ArchipelagoCompat;
+import net.deadlydiamond98.archipelago.compat.ExplorersCompassCompat;
+import net.deadlydiamond98.archipelago.compat.NaturesCompassCompat;
 import net.deadlydiamond98.archipelago.networking.s2c.SendArchipelagoInfoS2CPacket;
 import net.deadlydiamond98.archipelago.networking.s2c.SendUncheckedItemsS2CPacket;
 import net.deadlydiamond98.archipelago.util.APAdvancementHelper;
 import net.deadlydiamond98.archipelago.util.APServerUtil;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
+import net.minecraft.item.ItemStack;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -57,15 +60,22 @@ public class APConnectEvents {
                 }
             });
 
+            boolean giveNaturesCompass = false;
+            boolean giveExplorersCompass = false;
+
             if (slot.logic_difficulty_options.contains("Natures Compass Logic")) {
                 if (!APMod.isModLoaded("naturescompass")) {
                     missing.add("naturescompass");
+                } else {
+                    giveNaturesCompass = true;
                 }
             }
 
             if (slot.logic_difficulty_options.contains("Explorers Compass Logic")) {
                 if (!APMod.isModLoaded("explorerscompass")) {
                     missing.add("explorerscompass");
+                } else {
+                    giveExplorersCompass = true;
                 }
             }
 
@@ -90,6 +100,9 @@ public class APConnectEvents {
                 }
             });
 
+            final boolean finalGiveNaturesCompass = giveNaturesCompass;
+            final boolean finalGiveExplorersCompass = giveExplorersCompass;
+
             APServerUtil.runOnServer(server -> {
                 // Enable Keep Inventory
                 if (slot.keep_inventory == 1) {
@@ -101,6 +114,13 @@ public class APConnectEvents {
                     //server.getPlayerManager().getAdvancementTracker(player).reload(server.getAdvancementLoader());
                     SendArchipelagoInfoS2CPacket.send(player);
                     SendUncheckedItemsS2CPacket.send(player);
+
+                    if (finalGiveNaturesCompass) {
+                        NaturesCompassCompat.giveCompass(player);
+                    }
+                    if (finalGiveExplorersCompass) {
+                        ExplorersCompassCompat.giveCompass(player);
+                    }
                 });
             });
 

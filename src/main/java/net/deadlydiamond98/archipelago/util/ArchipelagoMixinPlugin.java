@@ -15,6 +15,7 @@ public class ArchipelagoMixinPlugin implements IMixinConfigPlugin {
     private static final Map<String, Supplier<Boolean>> CONDITIONS = new HashMap<>();
 
     static {
+        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.explorerscompass.StructureUtilsGroupSearchMixin", () -> APMod.isModLoaded("explorerscompass"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.jade.DisplayHelperMixin", () -> APMod.isModLoaded("jade"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.jei.ItemStackRendererMixin", () -> APMod.isModLoaded("jei"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.jei.ItemStackBatchRendererMixin", () -> APMod.isModLoaded("jei"));

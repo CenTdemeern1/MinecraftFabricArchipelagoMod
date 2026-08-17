@@ -16,6 +16,7 @@ public class APServerTickEvents {
                 APServerPlayConnectionEvents.syncData = false;
                 APAdvancementHelper.resyncAdvancements();
                 ArchipelagoCompat.applyBiomeRestriction(server.getOverworld(), APPersistentState.get().getUnlockedBiomes());
+                ArchipelagoCompat.applyStructureRestriction(server.getOverworld(), APPersistentState.get().getUnlockedStructures());
                 server.getPlayerManager().getPlayerList().forEach(player -> {
                     UpdatePlayerAbilitiesS2CPacket.send(player);
                     SendArchipelagoInfoS2CPacket.send(player);

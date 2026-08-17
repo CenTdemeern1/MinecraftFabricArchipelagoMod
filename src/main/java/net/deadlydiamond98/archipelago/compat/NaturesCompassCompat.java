@@ -19,7 +19,7 @@ public class NaturesCompassCompat {
         for (var entry : registry.getEntrySet()) {
             Identifier id = entry.getKey().getValue();
             if (!unlockedBiomes.contains(id.toString())) {
-                blacklist.add(id.toString()); // exact match, no glob needed
+                blacklist.add(id.toString());
             }
         }
         NaturesCompassConfig.biomeBlacklist = blacklist;

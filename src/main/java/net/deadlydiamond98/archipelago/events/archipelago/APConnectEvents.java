@@ -123,6 +123,7 @@ public class APConnectEvents {
             APServerUtil.runOnServer(server -> {
                 APAdvancementHelper.resyncAdvancements();
                 ArchipelagoCompat.applyBiomeRestriction(server.getOverworld(), state.getUnlockedBiomes());
+                ArchipelagoCompat.applyStructureRestriction(server.getOverworld(), state.getUnlockedStructures());
             });
         }
     }

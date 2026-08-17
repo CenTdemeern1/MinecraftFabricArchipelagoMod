@@ -21,8 +21,8 @@ public class EssenceOfArchipelagoItem extends Item {
     @Override
     public void appendTooltip(ItemStack stack, @Nullable World world, List<Text> tooltip, TooltipContext context) {
         super.appendTooltip(stack, world, tooltip, context);
-        tooltip.add(Text.translatable("item.archipelago.unimplemented_desc").setStyle(Style.EMPTY.withColor(Formatting.RED)));
-        tooltip.add(ScreenTexts.EMPTY);
+        //tooltip.add(Text.translatable("item.archipelago.unimplemented_desc").setStyle(Style.EMPTY.withColor(Formatting.RED)));
+        //tooltip.add(ScreenTexts.EMPTY);
         tooltip.add(Text.translatable(getTranslationKey() + ".tooltipa").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
         tooltip.add(Text.translatable(getTranslationKey() + ".tooltipb").setStyle(Style.EMPTY.withColor(Formatting.GRAY)));
     }

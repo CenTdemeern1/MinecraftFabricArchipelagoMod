@@ -231,6 +231,12 @@ public class SavedArchipelagoItems {
         );
         ArchipelagoItems.ITEMS.put("Buried Treasure (Explorer's Compass)", new StructureUnlockAPItem(buriedTreasure));
 
+        Set<String> mineshaft = Set.of(
+            "minecraft:mineshaft",
+            "minecraft:mineshaft_mesa"
+        );
+        ArchipelagoItems.ITEMS.put("Mineshaft (Explorer's Compass)", new StructureUnlockAPItem(mineshaft));
+
         Set<String> monument = Set.of(
             "minecraft:monument"
         );

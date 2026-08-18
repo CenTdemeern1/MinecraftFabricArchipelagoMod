@@ -13,6 +13,7 @@ import net.minecraft.util.Identifier;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 public class APAdvancementHelper {
 
@@ -21,7 +22,14 @@ public class APAdvancementHelper {
      */
     public static void resyncAdvancements() {
         // Sends all Found Advancements
-        new ArrayList<>(APPersistentState.get().getAdvancementIds()).forEach(APAdvancementHelper::grantAdvancement);
+        Set<Long> foundAdvancementIds = APPersistentState.get().getAdvancementIds();
+        Archipelago.run(archipelago -> archipelago.checkLocations(
+            foundAdvancementIds.stream()
+                               .filter(id -> APLocations.ADVANCEMENT_LOCATIONS.inverse().get(id) != null)
+                               .filter(id -> archipelago.getLocationManager().getMissingLocations().contains(id))
+                               .collect(Collectors.toList())
+        ));
+        new ArrayList<>(foundAdvancementIds).forEach(APAdvancementHelper::grantAdvancement);
         // Grant Root Advancements
         grantRootAdvancements();
         // Attempts to trigger goal
@@ -53,7 +61,6 @@ public class APAdvancementHelper {
             return;
         }
 
-        Archipelago.run(archipelago -> archipelago.checkLocation(id));
         grantAdvancement(advancementID);
     }
 
@@ -67,7 +74,10 @@ public class APAdvancementHelper {
         if (server != null) {
             List<ServerPlayerEntity> players = new ArrayList<>(server.getPlayerManager().getPlayerList());
             Advancement advancement = server.getAdvancementLoader().get(id);
-
+            if (advancement == null) {
+                return;
+            }
+            
             for (ServerPlayerEntity player : players) {
                 AdvancementProgress progress = player.getAdvancementTracker().getProgress(advancement);
                 if (!progress.isDone()) {

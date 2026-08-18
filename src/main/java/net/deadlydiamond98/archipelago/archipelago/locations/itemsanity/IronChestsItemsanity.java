@@ -12,7 +12,7 @@ public class IronChestsItemsanity {
         itemsanity(new Identifier("ironchests:iron_chest"));
         itemsanity(new Identifier("ironchests:gold_chest"));
         itemsanity(new Identifier("ironchests:crystal_chest"));
-        itemsanity(new Identifier("ironchests:diamond_chest"));
+        itemsanity(new Identifier("ironchests:diamond_barrel"));
         itemsanity(new Identifier("ironchests:copper_chest"));
         itemsanity(new Identifier("ironchests:obsidian_chest"));
         itemsanity(new Identifier("ironchests:copper_barrel"));

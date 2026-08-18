@@ -294,6 +294,14 @@ public class SavedArchipelagoItems {
             "minecraft:ancient_city"
         );
         ArchipelagoItems.ITEMS.put("Ancient City (Explorer's Compass)", new StructureUnlockAPItem(ancientCity));
+
+        Set<String> heartCrystal = Set.of(
+            "healpgood:heart_crystal",
+            "healpgood:heart_crystal_big"
+        );
+        if (APMod.isModLoaded("healpgood")) {
+            ArchipelagoItems.ITEMS.put("Heart Crystal (Explorer's Compass)", new StructureUnlockAPItem(heartCrystal));
+        }
     }
 
     public static boolean hasAdvancedStorage() {

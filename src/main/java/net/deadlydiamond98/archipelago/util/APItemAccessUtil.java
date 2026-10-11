@@ -12,6 +12,7 @@ import net.minecraft.text.Text;
 
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.concurrent.atomic.AtomicReference;
 
 public class APItemAccessUtil {
     public static final Map<String, Set<Item>> BOOLEAN_ITEMS = new HashMap<>();
@@ -26,28 +27,38 @@ public class APItemAccessUtil {
      * @param item the item to check
      */
     public static boolean allowCraftOrUse(PlayerEntity player, ItemConvertible item) {
-        AtomicBoolean bl = new AtomicBoolean(true);
-        AtomicBoolean triggeredCheckRequired = new AtomicBoolean(false);
+        Optional<MissingItem> potentialMissingItem = getMissingItemFor(item);
+        potentialMissingItem.ifPresent(missingItem -> sendRequiresText(player, missingItem.name, missingItem.amount));
+        return potentialMissingItem.isEmpty();
+    }
+
+    public static final class MissingItem {
+        public String name;
+        public int amount;
+        public Text attemptedCraft;
+
+        MissingItem(String name, int amount, Text attemptedCraft) {
+            this.name = name;
+            this.amount = amount;
+            this.attemptedCraft = attemptedCraft;
+        }
+    }
+
+    public static Optional<MissingItem> getMissingItemFor(ItemConvertible item) {
+        AtomicReference<MissingItem> missingItem = new AtomicReference<>(null);
+        Text itemName = item.asItem().getName();
         PROGRESSIVE_ITEMS.forEach((key, items) -> {
             if (checkIfProgressiveRecipeUnlocked(item.asItem(), APPersistentState.get().getIntCheckValue(key), items)) {
-                if (!triggeredCheckRequired.get()) {
-                    triggeredCheckRequired.set(true);
-                    sendRequiresText(player, key, getTierForProgressive(key, item.asItem()));
-                }
-                bl.set(false);
+                missingItem.compareAndSet(null, new MissingItem(key, getTierForProgressive(key, item.asItem()), itemName));
             }
         });
         BOOLEAN_ITEMS.forEach((key, items) -> {
             if (items.contains(item.asItem()) && !APPersistentState.get().getBooleanCheckValue(key)) {
-                if (!triggeredCheckRequired.get()) {
-                    triggeredCheckRequired.set(true);
-                    sendRequiresText(player, key, 1);
-                }
-                bl.set(false);
+                missingItem.compareAndSet(null, new MissingItem(key, 1, itemName));
             }
         });
 
-        return bl.get();
+        return Optional.ofNullable(missingItem.get());
     }
 
     public static int getTierForProgressive(String check, Item item) {

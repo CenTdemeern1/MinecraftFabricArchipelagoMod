@@ -56,6 +56,9 @@
 
   "archipelago.check.requires_check": "Requires \"%s\"",
 
+  "archipelago.compat.create.crafting.requires_check": "Could not craft %1$s because it _requires_ \"%2$s\"",
+  "archipelago.compat.create.crafting.requires_check.multiple": "Could not craft %1$s because it _requires_ %3$d_x_ %2$s",
+
   "advancements.legacy.root.title": "Legacy and Bedrock",
   "advancements.legacy.root.description": "Root Advancement for Archipelago Advancements based off 1.12 Achievements and Bedrock Achievements",
 

@@ -5,7 +5,9 @@ import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import net.createmod.catnip.lang.FontHelper;
+import net.createmod.catnip.lang.LangBuilder;
 import net.deadlydiamond98.archipelago.APMod;
+import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.minecraft.block.BlockState;
@@ -27,8 +29,8 @@ import java.util.Optional;
 public class KineticBlockEntityMixin {
     @Unique
     Optional<APItemAccessUtil.MissingItem> getMissingItem() {
-        if ((Object) this instanceof BasinOperatingBlockEntity) {
-            return ((IMissingAPItemAccessor)this).archipelago$getMissingAPItem();
+        if ((Object) this instanceof IMissingAPItemAccessor accessor) {
+            return accessor.archipelago$getMissingAPItem();
         }
         return Optional.empty();
     }
@@ -38,15 +40,21 @@ public class KineticBlockEntityMixin {
         Optional<APItemAccessUtil.MissingItem> potentialMissingItem = getMissingItem();
         if (potentialMissingItem.isPresent()) {
             APItemAccessUtil.MissingItem missingItem = potentialMissingItem.get();
-            MutableText heading = Text.translatable("archipelago.check.requires_check", missingItem.name).formatted(Formatting.GOLD);
-            tooltip.add(heading);
-            MutableText description;
-            if (missingItem.amount == 1) {
-                description = Text.translatable("archipelago.compat.create.crafting.requires_check", missingItem.name, missingItem.attemptedCraft);
-            } else {
-                description = Text.translatable("archipelago.compat.create.crafting.requires_check.multiple", missingItem.name, missingItem.attemptedCraft, missingItem.amount);
+            String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name);
+            new LangBuilder(APMod.MOD_ID)
+                    .translate("check.requires_check", itemName)
+                    .style(Formatting.GOLD)
+                    .forGoggles(tooltip);
+            String translationKey = missingItem.amount == 1
+                            ? "archipelago.compat.create.crafting.requires_check"
+                            : "archipelago.compat.create.crafting.requires_check.multiple";
+            MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft, itemName, missingItem.amount);
+            List<Text> cutDescription = TooltipHelper.cutTextComponent(description, FontHelper.Palette.GRAY_AND_WHITE);
+            for (Text text : cutDescription) {
+                new LangBuilder(APMod.MOD_ID)
+                        .add(text)
+                        .forGoggles(tooltip);
             }
-            tooltip.addAll(TooltipHelper.cutTextComponent(description, FontHelper.Palette.GRAY_AND_WHITE));
             cir.setReturnValue(true);
         }
     }

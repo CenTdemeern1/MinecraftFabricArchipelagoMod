@@ -3,9 +3,11 @@ package net.deadlydiamond98.archipelago.util;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.common.world.APPersistentState;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
+import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
+import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -41,6 +43,34 @@ public class APItemAccessUtil {
             this.name = name;
             this.amount = amount;
             this.attemptedCraft = attemptedCraft;
+        }
+
+        public void serialize(PacketByteBuf buf) {
+            buf.writeInt(amount);
+            buf.writeString(name);
+            buf.writeText(attemptedCraft);
+        }
+
+        public static void serializeNone(PacketByteBuf buf) {
+            buf.writeInt(0);
+        }
+
+        public static Optional<MissingItem> deserialize(PacketByteBuf buf) {
+            int amount = buf.readInt();
+            if (amount == 0) {
+                return Optional.empty();
+            }
+            String name = buf.readString();
+            Text attemptedCraft = buf.readText();
+            return Optional.of(new MissingItem(name, amount, attemptedCraft));
+        }
+
+        @Override
+        public boolean equals(Object other) {
+            return other instanceof MissingItem otherItem
+                    && this.name.equals(otherItem.name)
+                    && this.amount == otherItem.amount
+                    && this.attemptedCraft.equals(otherItem.attemptedCraft);
         }
     }
 

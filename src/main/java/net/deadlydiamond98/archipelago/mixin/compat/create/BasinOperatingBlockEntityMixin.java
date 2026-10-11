@@ -4,12 +4,15 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
+import net.deadlydiamond98.archipelago.networking.s2c.MissingAPItemForCreateS2CPacket;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.registry.DynamicRegistryManager;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
@@ -33,6 +36,11 @@ public class BasinOperatingBlockEntityMixin extends KineticBlockEntity implement
         super(typeIn, pos, state);
     }
 
+    @Override
+    public void archipelago$setMissingAPItem(@Nullable APItemAccessUtil.MissingItem missingItem) {
+        archipelago$missingAPItem = missingItem;
+    }
+
     public Optional<APItemAccessUtil.MissingItem> archipelago$getMissingAPItem() {
         return Optional.ofNullable(archipelago$missingAPItem);
     }
@@ -49,11 +57,26 @@ public class BasinOperatingBlockEntityMixin extends KineticBlockEntity implement
             ItemStack itemStack = recipe.getOutput(manager);
             Optional<APItemAccessUtil.MissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(itemStack.getItem());
             if (potentialMissingItem.isPresent()) {
-                archipelago$missingAPItem = potentialMissingItem.get();
+                APItemAccessUtil.MissingItem missingItem = potentialMissingItem.get();
+                if (!missingItem.equals(archipelago$missingAPItem)) {
+                    changeMissingAPItem(missingItem);
+                }
                 cir.setReturnValue(new ArrayList<>());
                 return;
             }
         }
-        archipelago$missingAPItem = null;
+        if (archipelago$missingAPItem != null) {
+            changeMissingAPItem(null);
+        }
+    }
+
+    @Unique
+    void changeMissingAPItem(@Nullable APItemAccessUtil.MissingItem item) {
+        archipelago$missingAPItem = item;
+        if (getWorld() instanceof ServerWorld serverWorld) {
+            for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                MissingAPItemForCreateS2CPacket.send(player, getPos(), item);
+            }
+        }
     }
 }

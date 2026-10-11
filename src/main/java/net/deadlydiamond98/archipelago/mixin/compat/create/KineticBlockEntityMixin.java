@@ -1,8 +1,6 @@
 package net.deadlydiamond98.archipelago.mixin.compat.create;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
-import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
-import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.LangBuilder;
@@ -10,12 +8,9 @@ import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
-import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;

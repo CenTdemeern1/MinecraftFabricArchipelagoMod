@@ -2,7 +2,6 @@ package net.deadlydiamond98.archipelago.mixin.compat.create;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
-import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
 import net.deadlydiamond98.archipelago.networking.s2c.MissingAPItemForCreateS2CPacket;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;

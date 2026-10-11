@@ -36,6 +36,7 @@
     "common.player.ServerPlayerEntityMixin",
     "common.player.ServerPlayerInteractionManagerMixin",
     "common.worldgen.BeehiveTreeDecoratorMixin",
+    "compat.create.BlueprintEntityMixin",
     "compat.explorerscompass.StructureUtilsGroupSearchMixin",
     "compat.jade.DisplayHelperMixin",
     "compat.jei.ItemStackBatchRendererMixin",

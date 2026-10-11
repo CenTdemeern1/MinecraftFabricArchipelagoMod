@@ -20,6 +20,7 @@ public class ArchipelagoMixinPlugin implements IMixinConfigPlugin {
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.jei.ItemStackRendererMixin", () -> APMod.isModLoaded("jei"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.jei.ItemStackBatchRendererMixin", () -> APMod.isModLoaded("jei"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.rei.ItemEntryDefinitionMixin", () -> APMod.isModLoaded("roughlyenoughitems"));
+        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.BlueprintEntityMixin", () -> APMod.isModLoaded("create"));
     }
 
     @Override

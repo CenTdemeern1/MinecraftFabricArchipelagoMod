@@ -9,7 +9,7 @@ import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
 import net.deadlydiamond98.archipelago.networking.s2c.MissingAPItemForCreateS2CPacket;
-import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
+import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.server.network.ServerPlayerEntity;
@@ -33,21 +33,21 @@ import java.util.Optional;
 public abstract class KineticBlockEntityMixin extends SmartBlockEntity implements IMissingAPItemAccessor {
     @Unique
     @Nullable
-    private APItemAccessUtil.MissingItem archipelago$missingAPItem;
+    private APMissingItem archipelago$missingAPItem;
 
     public KineticBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    public void archipelago$setMissingAPItem(@Nullable APItemAccessUtil.MissingItem missingItem) {
+    public void archipelago$setMissingAPItem(@Nullable APMissingItem missingItem) {
         archipelago$missingAPItem = missingItem;
     }
 
-    public Optional<APItemAccessUtil.MissingItem> archipelago$getMissingAPItem() {
+    public Optional<APMissingItem> archipelago$getMissingAPItem() {
         return Optional.ofNullable(archipelago$missingAPItem);
     }
 
-    public void archipelago$changeMissingAPItem(@Nullable APItemAccessUtil.MissingItem item) {
+    public void archipelago$changeMissingAPItem(@Nullable APMissingItem item) {
         if (Objects.equals(item, archipelago$missingAPItem)) return;
         archipelago$missingAPItem = item;
         if (getWorld() instanceof ServerWorld serverWorld) {
@@ -59,9 +59,9 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
 
     @Inject(method = "addToTooltip", at = @At("RETURN"), cancellable = true, remap = false)
     void addMissingAPItemTooltip(List<Text> tooltip, boolean isPlayerSneaking, CallbackInfoReturnable<Boolean> cir) {
-        Optional<APItemAccessUtil.MissingItem> potentialMissingItem = archipelago$getMissingAPItem();
+        Optional<APMissingItem> potentialMissingItem = archipelago$getMissingAPItem();
         if (potentialMissingItem.isPresent()) {
-            APItemAccessUtil.MissingItem missingItem = potentialMissingItem.get();
+            APMissingItem missingItem = potentialMissingItem.get();
             String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name);
             new LangBuilder(APMod.MOD_ID)
                     .translate("check.requires_check", itemName)

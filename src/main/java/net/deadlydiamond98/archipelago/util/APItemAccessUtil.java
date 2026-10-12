@@ -3,17 +3,14 @@ package net.deadlydiamond98.archipelago.util;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.common.world.APPersistentState;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
-import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
-import net.minecraft.network.PacketByteBuf;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
 import java.util.*;
-import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class APItemAccessUtil {
@@ -29,62 +26,22 @@ public class APItemAccessUtil {
      * @param item the item to check
      */
     public static boolean allowCraftOrUse(PlayerEntity player, ItemConvertible item) {
-        Optional<MissingItem> potentialMissingItem = getMissingItemFor(item);
+        Optional<APMissingItem> potentialMissingItem = getMissingItemFor(item);
         potentialMissingItem.ifPresent(missingItem -> sendRequiresText(player, missingItem.name, missingItem.amount));
         return potentialMissingItem.isEmpty();
     }
 
-    public static final class MissingItem {
-        public String name;
-        public int amount;
-        public Text attemptedCraft;
-
-        MissingItem(String name, int amount, Text attemptedCraft) {
-            this.name = name;
-            this.amount = amount;
-            this.attemptedCraft = attemptedCraft;
-        }
-
-        public void serialize(PacketByteBuf buf) {
-            buf.writeInt(amount);
-            buf.writeString(name);
-            buf.writeText(attemptedCraft);
-        }
-
-        public static void serializeNone(PacketByteBuf buf) {
-            buf.writeInt(0);
-        }
-
-        public static Optional<MissingItem> deserialize(PacketByteBuf buf) {
-            int amount = buf.readInt();
-            if (amount == 0) {
-                return Optional.empty();
-            }
-            String name = buf.readString();
-            Text attemptedCraft = buf.readText();
-            return Optional.of(new MissingItem(name, amount, attemptedCraft));
-        }
-
-        @Override
-        public boolean equals(Object other) {
-            return other instanceof MissingItem otherItem
-                    && this.name.equals(otherItem.name)
-                    && this.amount == otherItem.amount
-                    && this.attemptedCraft.equals(otherItem.attemptedCraft);
-        }
-    }
-
-    public static Optional<MissingItem> getMissingItemFor(ItemConvertible item) {
-        AtomicReference<MissingItem> missingItem = new AtomicReference<>(null);
+    public static Optional<APMissingItem> getMissingItemFor(ItemConvertible item) {
+        AtomicReference<APMissingItem> missingItem = new AtomicReference<>(null);
         Text itemName = item.asItem().getName();
         PROGRESSIVE_ITEMS.forEach((key, items) -> {
             if (checkIfProgressiveRecipeUnlocked(item.asItem(), APPersistentState.get().getIntCheckValue(key), items)) {
-                missingItem.compareAndSet(null, new MissingItem(key, getTierForProgressive(key, item.asItem()), itemName));
+                missingItem.compareAndSet(null, new APMissingItem(key, getTierForProgressive(key, item.asItem()), itemName));
             }
         });
         BOOLEAN_ITEMS.forEach((key, items) -> {
             if (items.contains(item.asItem()) && !APPersistentState.get().getBooleanCheckValue(key)) {
-                missingItem.compareAndSet(null, new MissingItem(key, 1, itemName));
+                missingItem.compareAndSet(null, new APMissingItem(key, 1, itemName));
             }
         });
 

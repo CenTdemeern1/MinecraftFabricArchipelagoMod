@@ -4,6 +4,7 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
+import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -36,9 +37,9 @@ public class BasinOperatingBlockEntityMixin extends KineticBlockEntity {
         DynamicRegistryManager manager = world.getRegistryManager();
         for (Recipe<?> recipe : recipes) {
             ItemStack itemStack = recipe.getOutput(manager);
-            Optional<APItemAccessUtil.MissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(itemStack.getItem());
+            Optional<APMissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(itemStack.getItem());
             if (potentialMissingItem.isPresent()) {
-                APItemAccessUtil.MissingItem missingItem = potentialMissingItem.get();
+                APMissingItem missingItem = potentialMissingItem.get();
                 ((IMissingAPItemAccessor)this).archipelago$changeMissingAPItem(missingItem);
                 cir.setReturnValue(new ArrayList<>());
                 return;

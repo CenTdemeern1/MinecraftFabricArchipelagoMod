@@ -30,10 +30,7 @@ public class BasinOperatingBlockEntityMixin extends KineticBlockEntity {
     @Inject(method = "getMatchingRecipes", at = @At("RETURN"), cancellable = true, remap = false)
     void filterMatchingRecipes(CallbackInfoReturnable<List<Recipe<?>>> cir) {
         List<Recipe<?>> recipes = cir.getReturnValue();
-        World world = getWorld();
-        if (world == null) {
-            return;
-        }
+        if (world == null) return;
         DynamicRegistryManager manager = world.getRegistryManager();
         for (Recipe<?> recipe : recipes) {
             ItemStack itemStack = recipe.getOutput(manager);

@@ -1,38 +1,65 @@
 package net.deadlydiamond98.archipelago.mixin.compat.create;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
+import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.item.TooltipHelper;
 import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.LangBuilder;
 import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
+import net.deadlydiamond98.archipelago.networking.s2c.MissingAPItemForCreateS2CPacket;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
+import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
+import javax.annotation.Nullable;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 @Mixin(KineticBlockEntity.class)
-public class KineticBlockEntityMixin {
+public abstract class KineticBlockEntityMixin extends SmartBlockEntity implements IMissingAPItemAccessor {
     @Unique
-    Optional<APItemAccessUtil.MissingItem> getMissingItem() {
-        if ((Object) this instanceof IMissingAPItemAccessor accessor) {
-            return accessor.archipelago$getMissingAPItem();
+    @Nullable
+    private APItemAccessUtil.MissingItem archipelago$missingAPItem;
+
+    public KineticBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
+        super(type, pos, state);
+    }
+
+    public void archipelago$setMissingAPItem(@Nullable APItemAccessUtil.MissingItem missingItem) {
+        archipelago$missingAPItem = missingItem;
+    }
+
+    public Optional<APItemAccessUtil.MissingItem> archipelago$getMissingAPItem() {
+        return Optional.ofNullable(archipelago$missingAPItem);
+    }
+
+    public void archipelago$changeMissingAPItem(@Nullable APItemAccessUtil.MissingItem item) {
+        if (Objects.equals(item, archipelago$missingAPItem)) return;
+        archipelago$missingAPItem = item;
+        if (getWorld() instanceof ServerWorld serverWorld) {
+            for (ServerPlayerEntity player : serverWorld.getPlayers()) {
+                MissingAPItemForCreateS2CPacket.send(player, getPos(), item);
+            }
         }
-        return Optional.empty();
     }
 
     @Inject(method = "addToTooltip", at = @At("RETURN"), cancellable = true, remap = false)
     void addMissingAPItemTooltip(List<Text> tooltip, boolean isPlayerSneaking, CallbackInfoReturnable<Boolean> cir) {
-        Optional<APItemAccessUtil.MissingItem> potentialMissingItem = getMissingItem();
+        Optional<APItemAccessUtil.MissingItem> potentialMissingItem = archipelago$getMissingAPItem();
         if (potentialMissingItem.isPresent()) {
             APItemAccessUtil.MissingItem missingItem = potentialMissingItem.get();
             String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name);

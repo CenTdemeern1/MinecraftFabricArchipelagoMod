@@ -8,4 +8,5 @@ import java.util.Optional;
 public interface IMissingAPItemAccessor {
     void archipelago$setMissingAPItem(@Nullable APItemAccessUtil.MissingItem missingItem);
     Optional<APItemAccessUtil.MissingItem> archipelago$getMissingAPItem();
+    void archipelago$changeMissingAPItem(@Nullable APItemAccessUtil.MissingItem item);
 }

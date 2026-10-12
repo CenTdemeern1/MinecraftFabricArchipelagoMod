@@ -40,6 +40,7 @@
     "compat.create.BlockBreakingKineticBlockEntityMixin",
     "compat.create.BlockBreakingMovementBehaviorMixin",
     "compat.create.BlueprintEntityMixin",
+    "compat.create.ContraptionMixin",
     "compat.create.KineticBlockEntityMixin",
     "compat.create.MechanicalPressBlockEntityMixin",
     "compat.create.MountedItemStorageMixin",

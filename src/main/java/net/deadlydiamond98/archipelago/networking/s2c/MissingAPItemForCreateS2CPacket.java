@@ -1,7 +1,7 @@
 package net.deadlydiamond98.archipelago.networking.s2c;
 
 import net.deadlydiamond98.archipelago.APMod;
-import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
+import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemAccessor;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.fabricmc.fabric.api.networking.v1.PacketByteBufs;
 import net.fabricmc.fabric.api.networking.v1.PacketSender;

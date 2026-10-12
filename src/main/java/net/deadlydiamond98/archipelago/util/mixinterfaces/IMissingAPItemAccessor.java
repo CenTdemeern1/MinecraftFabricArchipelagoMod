@@ -1,4 +1,4 @@
-package net.deadlydiamond98.archipelago.compat.create;
+package net.deadlydiamond98.archipelago.util.mixinterfaces;
 
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 

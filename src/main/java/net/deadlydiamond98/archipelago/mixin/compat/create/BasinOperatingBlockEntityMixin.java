@@ -2,7 +2,7 @@ package net.deadlydiamond98.archipelago.mixin.compat.create;
 
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
-import net.deadlydiamond98.archipelago.compat.create.IMissingAPItemAccessor;
+import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemAccessor;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.minecraft.block.BlockState;

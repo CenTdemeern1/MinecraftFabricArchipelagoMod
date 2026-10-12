@@ -24,6 +24,9 @@ public abstract class MechanicalPressBlockEntityMixin extends BasinOperatingBloc
         super(typeIn, pos, state);
     }
 
+    // Filtering the recipe like this will let locked recipes pass underneath the press on a belt, instead of waiting.
+    // Because the recipe isn't checked again, this wouldn't get the item unstuck if the recipe is unlocked later.
+    // At least, that's my justification for having this naïve implementation.
     @Inject(method = "getRecipe", at = @At("RETURN"), cancellable = true)
     void filterRecipe(ItemStack item, CallbackInfoReturnable<Optional<PressingRecipe>> cir) {
         Optional<PressingRecipe> potentialRecipe = cir.getReturnValue();

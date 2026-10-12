@@ -24,6 +24,10 @@ public class APItemAccessUtil {
     public static final Set<String> PROGRESSIVE_ITEM_IDS = new HashSet<>();
     public static final Set<String> BOOLEAN_ITEM_IDS = new HashSet<>();
 
+    public static boolean disallowUsingBlock(@Nullable PlayerEntity player, BlockState state) {
+        return state.isIn(APTags.ARCHIPELAGO_LOCK_INTERACTION) && !APItemAccessUtil.allowCraftOrUse(player, state.getBlock().asItem());
+    }
+
     public static boolean disallowBreakingBlock(@Nullable PlayerEntity player, BlockState state) {
         return state.isIn(APTags.ARCHIPELAGO_LOCK_BREAKING) && !APItemAccessUtil.allowCraftOrUse(player, state.getBlock().asItem());
     }

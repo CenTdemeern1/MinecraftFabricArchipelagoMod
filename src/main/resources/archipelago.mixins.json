@@ -42,6 +42,7 @@
     "compat.create.BlueprintEntityMixin",
     "compat.create.KineticBlockEntityMixin",
     "compat.create.MechanicalPressBlockEntityMixin",
+    "compat.create.MountedItemStorageMixin",
     "compat.explorerscompass.StructureUtilsGroupSearchMixin",
     "compat.jade.DisplayHelperMixin",
     "compat.jei.ItemStackBatchRendererMixin",

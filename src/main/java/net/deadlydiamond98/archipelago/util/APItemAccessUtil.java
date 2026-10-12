@@ -2,7 +2,10 @@ package net.deadlydiamond98.archipelago.util;
 
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.common.world.APPersistentState;
+import net.deadlydiamond98.archipelago.init.APTags;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
+import net.minecraft.block.Block;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
@@ -10,6 +13,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicReference;
 
@@ -20,12 +24,25 @@ public class APItemAccessUtil {
     public static final Set<String> PROGRESSIVE_ITEM_IDS = new HashSet<>();
     public static final Set<String> BOOLEAN_ITEM_IDS = new HashSet<>();
 
+    public static boolean disallowBreakingBlock(@Nullable PlayerEntity player, BlockState state) {
+        return state.isIn(APTags.ARCHIPELAGO_LOCK_BREAKING) && !APItemAccessUtil.allowCraftOrUse(player, state.getBlock().asItem());
+    }
+
+    public static boolean disallowBreakingBlock(@Nullable PlayerEntity player, Block block) {
+        return block.getDefaultState().isIn(APTags.ARCHIPELAGO_LOCK_BREAKING) && !APItemAccessUtil.allowCraftOrUse(player, block.asItem());
+    }
+
+    public static Optional<APMissingItem> getMissingItemToBreak(BlockState state) {
+        if (!state.isIn(APTags.ARCHIPELAGO_LOCK_BREAKING)) return Optional.empty();
+        return getMissingItemFor(state.getBlock().asItem());
+    }
+
     /**
      * Checks if an item is unlocked
      * @param player the player
      * @param item the item to check
      */
-    public static boolean allowCraftOrUse(PlayerEntity player, ItemConvertible item) {
+    public static boolean allowCraftOrUse(@Nullable PlayerEntity player, ItemConvertible item) {
         Optional<APMissingItem> potentialMissingItem = getMissingItemFor(item);
         potentialMissingItem.ifPresent(missingItem -> sendRequiresText(player, missingItem.name, missingItem.amount));
         return potentialMissingItem.isEmpty();
@@ -98,7 +115,7 @@ public class APItemAccessUtil {
      * @param player the player
      * @param check the name of the check
      */
-    public static void sendRequiresText(PlayerEntity player, String check, int amount) {
+    public static void sendRequiresText(@Nullable PlayerEntity player, String check, int amount) {
         if (player != null) {
             if (!player.getWorld().isClient()) {
                 String checkName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(check);

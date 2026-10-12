@@ -24,6 +24,7 @@ public class ArchipelagoMixinPlugin implements IMixinConfigPlugin {
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.BasinOperatingBlockEntityMixin", () -> APMod.isModLoaded("create"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.KineticBlockEntityMixin", () -> APMod.isModLoaded("create"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.MechanicalPressBlockEntityMixin", () -> APMod.isModLoaded("create"));
+        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.BlockBreakingKineticBlockEntityMixin", () -> APMod.isModLoaded("create"));
     }
 
     @Override

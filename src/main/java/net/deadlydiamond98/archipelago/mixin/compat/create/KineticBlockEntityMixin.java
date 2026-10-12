@@ -1,5 +1,6 @@
 package net.deadlydiamond98.archipelago.mixin.compat.create;
 
+import com.simibubi.create.content.kinetics.base.BlockBreakingKineticBlockEntity;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import com.simibubi.create.foundation.item.TooltipHelper;
@@ -67,9 +68,11 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
                     .translate("check.requires_check", itemName)
                     .style(Formatting.GOLD)
                     .forGoggles(tooltip);
-            String translationKey = missingItem.amount == 1
-                            ? "archipelago.compat.create.crafting.requires_check"
-                            : "archipelago.compat.create.crafting.requires_check.multiple";
+            String translationKey = String.format(
+                    "archipelago.compat.create.%s.requires_check%s",
+                    ((Object) this instanceof BlockBreakingKineticBlockEntity) ? "breaking" : "crafting",
+                    missingItem.amount == 1 ? "" : ".multiple"
+            );
             MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft, itemName, missingItem.amount);
             List<Text> cutDescription = TooltipHelper.cutTextComponent(description, FontHelper.Palette.GRAY_AND_WHITE);
             for (Text text : cutDescription) {

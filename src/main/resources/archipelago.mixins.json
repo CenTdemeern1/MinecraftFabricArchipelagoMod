@@ -37,6 +37,7 @@
     "common.player.ServerPlayerInteractionManagerMixin",
     "common.worldgen.BeehiveTreeDecoratorMixin",
     "compat.create.BasinOperatingBlockEntityMixin",
+    "compat.create.BlockBreakingKineticBlockEntityMixin",
     "compat.create.BlueprintEntityMixin",
     "compat.create.KineticBlockEntityMixin",
     "compat.create.MechanicalPressBlockEntityMixin",

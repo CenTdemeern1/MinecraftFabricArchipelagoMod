@@ -39,7 +39,7 @@ public class ServerPlayerInteractionManagerMixin {
     @WrapOperation(method = "finishMining", at = @At(value = "INVOKE", target = "Lnet/minecraft/server/network/ServerPlayerInteractionManager;tryBreakBlock(Lnet/minecraft/util/math/BlockPos;)Z"))
     private boolean archipelago$finishMining(ServerPlayerInteractionManager instance, BlockPos pos, Operation<Boolean> original) {
         BlockState state = this.world.getBlockState(pos);
-        if (state.isIn(APTags.ARCHIPELAGO_LOCK_BREAKING) && !APItemAccessUtil.allowCraftOrUse(this.player, state.getBlock().asItem())) {
+        if (APItemAccessUtil.disallowBreakingBlock(this.player, state)) {
             return false;
         }
         return original.call(instance, pos);

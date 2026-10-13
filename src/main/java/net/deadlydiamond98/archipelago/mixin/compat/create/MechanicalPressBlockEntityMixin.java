@@ -5,7 +5,7 @@ import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemAccessor;
+import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -36,7 +36,7 @@ public abstract class MechanicalPressBlockEntityMixin extends BasinOperatingBloc
         DynamicRegistryManager registryAccess = world.getRegistryManager();
         ItemStack output = recipe.getOutput(registryAccess);
         Optional<APMissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(output.getItem());
-        ((IMissingAPItemAccessor)this).archipelago$changeMissingAPItem(potentialMissingItem.orElse(null));
+        ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(potentialMissingItem.orElse(null));
         if (potentialMissingItem.isPresent()) {
             cir.setReturnValue(Optional.empty());
         }

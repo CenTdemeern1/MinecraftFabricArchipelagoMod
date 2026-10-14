@@ -68,6 +68,16 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
         return new LangBuilder(APMod.MOD_ID);
     }
 
+    @Unique
+    private void cutAndAddTextComponent(Text text, List<Text> tooltip) {
+        List<Text> cutTexts = TooltipHelper.cutTextComponent(text, FontHelper.Palette.GRAY_AND_WHITE);
+        for (Text cutText : cutTexts) {
+            langBuilder()
+                    .add(cutText)
+                    .forGoggles(tooltip);
+        }
+    }
+
     @Inject(method = "addToTooltip", at = @At("RETURN"), cancellable = true, remap = false)
     void addMissingAPItemTooltip(List<Text> tooltip, boolean isPlayerSneaking, CallbackInfoReturnable<Boolean> cir) {
         APMissingItem[] missingItems = archipelago$getMissingAPItems();
@@ -84,15 +94,10 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
             String translationKey = String.format(
                     "archipelago.compat.create.%s.requires_check%s",
                     ((Object) this instanceof BlockBreakingKineticBlockEntity) ? "breaking" : "crafting",
-                    missingItem.amount == 1 ? "" : ".multiple"
+                    missingItem.amount == 0 ? "" : ".progressive"
             );
             MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft, itemName, missingItem.amount);
-            List<Text> cutDescription = TooltipHelper.cutTextComponent(description, FontHelper.Palette.GRAY_AND_WHITE);
-            for (Text text : cutDescription) {
-                langBuilder()
-                        .add(text)
-                        .forGoggles(tooltip);
-            }
+            cutAndAddTextComponent(description, tooltip);
 
             cir.setReturnValue(true);
         } else {
@@ -107,12 +112,13 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
                     unlockedItems,
                     missingItems.length
             );
-            List<Text> cutDescription = TooltipHelper.cutTextComponent(description, FontHelper.Palette.GRAY_AND_WHITE);
-            for (Text text : cutDescription) {
-                langBuilder()
-                        .add(text)
-                        .forGoggles(tooltip);
-            }
+            cutAndAddTextComponent(description, tooltip);
+
+//            tooltip.add(Text.empty());
+//            MutableText description2 = Text.translatable(
+//                    "archipelago.compat.create.crafting.some_missing.description.2"
+//            );
+//            cutAndAddTextComponent(description2, tooltip);
 
             for (APMissingItem missingItem : missingItems) {
                 String translationKey = String.format(
@@ -123,19 +129,20 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
                 );
                 String reqTranslationKey = String.format(
                         "compat.create.crafting.some_missing.requirement%s",
-                        missingItem.amount == 1 ? "" : ".multiple"
+                        missingItem.amount == 0 ? "" : ".progressive"
                 );
                 String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name);
                 Formatting formatting = missingItem.isMissing ? Formatting.RED : Formatting.GREEN;
 
+                tooltip.add(Text.empty());
                 langBuilder()
                         .translate(translationKey, missingItem.attemptedCraft)
                         .style(formatting)
-                        .forGoggles(tooltip, 1);
+                        .forGoggles(tooltip, 2);
                 langBuilder()
                         .translate(reqTranslationKey, itemName, missingItem.amount)
                         .style(formatting)
-                        .forGoggles(tooltip, 2);
+                        .forGoggles(tooltip, 4);
             }
             cir.setReturnValue(true);
         }

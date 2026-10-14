@@ -54,19 +54,45 @@ public class APItemAccessUtil {
 
     public static Optional<APMissingItem> getMissingItemFor(ItemConvertible item) {
         AtomicReference<APMissingItem> missingItem = new AtomicReference<>(null);
-        Text itemName = item.asItem().getName();
+        Item itemItem = item.asItem();
+        Text itemName = itemItem.getName();
         PROGRESSIVE_ITEMS.forEach((key, items) -> {
-            if (checkIfProgressiveRecipeUnlocked(item.asItem(), APPersistentState.get().getIntCheckValue(key), items)) {
-                missingItem.compareAndSet(null, new APMissingItem(key, getTierForProgressive(key, item.asItem()), itemName));
+            if (checkIfProgressiveRecipeUnlocked(itemItem, APPersistentState.get().getIntCheckValue(key), items)) {
+                missingItem.compareAndSet(null, new APMissingItem(key, getTierForProgressive(key, itemItem), itemName));
             }
         });
         BOOLEAN_ITEMS.forEach((key, items) -> {
-            if (items.contains(item.asItem()) && !APPersistentState.get().getBooleanCheckValue(key)) {
-                missingItem.compareAndSet(null, new APMissingItem(key, 1, itemName));
+            if (items.contains(itemItem) && !APPersistentState.get().getBooleanCheckValue(key)) {
+                missingItem.compareAndSet(null, new APMissingItem(key, 0, itemName));
             }
         });
 
         return Optional.ofNullable(missingItem.get());
+    }
+
+    /// Similar to {@link getMissingItemFor} except it also returns an item if its requirements were satisfied
+    /// with {@link APMissingItem::isMissing} set to `false`
+    public static Optional<APMissingItem> getRequirementFor(ItemConvertible item) {
+        // Prioritize missing requirements first, check unlocked ones after
+        Optional<APMissingItem> potentialMissingItem = getMissingItemFor(item);
+        if (potentialMissingItem.isPresent()) return potentialMissingItem;
+
+        AtomicReference<APMissingItem> obtainedItem = new AtomicReference<>(null);
+        Item itemItem = item.asItem();
+        Text itemName = itemItem.getName();
+        PROGRESSIVE_ITEMS.forEach((key, items) -> {
+            Integer tier = items.get(itemItem);
+            if (tier != null) {
+                obtainedItem.compareAndSet(null, new APMissingItem(key, tier, itemName, false));
+            }
+        });
+        BOOLEAN_ITEMS.forEach((key, items) -> {
+            if (items.contains(itemItem)) {
+                obtainedItem.compareAndSet(null, new APMissingItem(key, 0, itemName, false));
+            }
+        });
+
+        return Optional.ofNullable(obtainedItem.get());
     }
 
     public static int getTierForProgressive(String check, Item item) {

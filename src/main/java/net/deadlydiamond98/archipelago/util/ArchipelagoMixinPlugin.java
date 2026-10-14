@@ -20,14 +20,21 @@ public class ArchipelagoMixinPlugin implements IMixinConfigPlugin {
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.jei.ItemStackRendererMixin", () -> APMod.isModLoaded("jei"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.jei.ItemStackBatchRendererMixin", () -> APMod.isModLoaded("jei"));
         CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.rei.ItemEntryDefinitionMixin", () -> APMod.isModLoaded("roughlyenoughitems"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.BlueprintEntityMixin", () -> APMod.isModLoaded("create"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.BasinOperatingBlockEntityMixin", () -> APMod.isModLoaded("create"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.KineticBlockEntityMixin", () -> APMod.isModLoaded("create"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.MechanicalPressBlockEntityMixin", () -> APMod.isModLoaded("create"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.BlockBreakingKineticBlockEntityMixin", () -> APMod.isModLoaded("create"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.BlockBreakingMovementBehaviorMixin", () -> APMod.isModLoaded("create"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.MountedItemStorageMixin", () -> APMod.isModLoaded("create"));
-        CONDITIONS.put("net.deadlydiamond98.archipelago.mixin.compat.create.ContraptionMixin", () -> APMod.isModLoaded("create"));
+        String[] createMixins = {
+                "net.deadlydiamond98.archipelago.mixin.compat.create.BlueprintEntityMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.BasinOperatingBlockEntityMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.KineticBlockEntityMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.MechanicalPressBlockEntityMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.BlockBreakingKineticBlockEntityMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.BlockBreakingMovementBehaviorMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.MountedItemStorageMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.ContraptionMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.MillstoneBlockEntityMixin",
+        };
+        Supplier<Boolean> createLoadedSupplier = () -> APMod.isModLoaded("create");
+        for (String createMixin : createMixins) {
+            CONDITIONS.put(createMixin, createLoadedSupplier);
+        }
     }
 
     @Override

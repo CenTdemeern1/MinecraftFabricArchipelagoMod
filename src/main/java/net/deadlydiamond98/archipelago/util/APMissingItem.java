@@ -9,9 +9,10 @@ import java.util.Optional;
 /// An item that is required and (potentially) missing for a specific crafting output.
 /// Used to display missing item requirements.
 public final class APMissingItem {
-    /// The name of the AP item required for this crafting output
+    /// The name of the AP item required for this crafting output.
     public String name;
-    /// The amount of this AP item that is required for this crafting output
+    /// The amount of this AP item that is required for this crafting output.
+    /// `0` is a sentinel value indicating the item is not progressive.
     public int amount;
     /// The name of the attempted crafting output
     public Text attemptedCraft;

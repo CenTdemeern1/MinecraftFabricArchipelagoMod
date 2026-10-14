@@ -9,12 +9,15 @@ import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
+import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Arrays;
 import java.util.Optional;
@@ -31,9 +34,15 @@ public class MillstoneBlockEntityMixin {
         return archipelago$checkFoundRecipe(instance, inv, world, original);
     }
 
+    @Inject(method = "lambda$process$0", at = @At("HEAD"), cancellable = true)
+    void filterOutput(Transaction t, ItemStack stack, CallbackInfo ci) {
+        if (APItemAccessUtil.getMissingItemFor(stack.getItem()).isPresent()) {
+            ci.cancel();
+        }
+    }
+
     @Unique
     Optional<MillingRecipe> archipelago$checkFoundRecipe(AllRecipeTypes instance, Inventory inv, World world, Operation<Optional<MillingRecipe>> original) {
-        APMod.LOGGER.info("Hello I have been called for some fuckass reason");
         Optional<MillingRecipe> foundRecipe = original.call(instance, inv, world);
         if (foundRecipe.isEmpty()) return foundRecipe;
         APMissingItem[] output = foundRecipe

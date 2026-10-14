@@ -36,7 +36,7 @@ public class MillstoneBlockEntityMixin {
 
     @Inject(method = "lambda$process$0", at = @At("HEAD"), cancellable = true)
     void filterOutput(Transaction t, ItemStack stack, CallbackInfo ci) {
-        if (APItemAccessUtil.getMissingItemFor(stack.getItem()).isPresent()) {
+        if (!APItemAccessUtil.allowCraftOrUse(null, stack.getItem())) {
             ci.cancel();
         }
     }
@@ -53,7 +53,7 @@ public class MillstoneBlockEntityMixin {
                 .distinct()
                 .flatMap(i -> APItemAccessUtil.getRequirementFor(i).stream())
                 .toArray(APMissingItem[]::new);
-        if (output.length > 0 && Arrays.stream(output).anyMatch(i -> i.isMissing)) {
+        if (output.length > 0 && Arrays.stream(output).anyMatch(APMissingItem::isStillMissing)) {
             ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItems(output);
         } else {
             ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(null);

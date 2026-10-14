@@ -8,6 +8,7 @@ import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.LangBuilder;
 import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
+import net.deadlydiamond98.archipelago.common.world.APPersistentState;
 import net.deadlydiamond98.archipelago.networking.s2c.MissingAPItemForCreateS2CPacket;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
@@ -101,12 +102,14 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
 
             cir.setReturnValue(true);
         } else {
+            long unlockedItems = Arrays.stream(missingItems).filter(i -> !i.isStillMissing()).count();
+            if (unlockedItems == missingItems.length) return; // State has changed in the meantime
+
             langBuilder()
                     .translate("compat.create.crafting.some_missing.heading")
                     .style(Formatting.GOLD)
                     .forGoggles(tooltip);
 
-            long unlockedItems = Arrays.stream(missingItems).filter(i -> !i.isMissing).count();
             MutableText description = Text.translatable(
                     "archipelago.compat.create.crafting.some_missing.description",
                     unlockedItems,
@@ -114,16 +117,10 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
             );
             cutAndAddTextComponent(description, tooltip);
 
-//            tooltip.add(Text.empty());
-//            MutableText description2 = Text.translatable(
-//                    "archipelago.compat.create.crafting.some_missing.description.2"
-//            );
-//            cutAndAddTextComponent(description2, tooltip);
-
             for (APMissingItem missingItem : missingItems) {
                 String translationKey = String.format(
                         "compat.create.crafting.some_missing.item.%s",
-                        missingItem.isMissing
+                        missingItem.isStillMissing()
                                 ? "locked"
                                 : "unlocked"
                 );
@@ -132,7 +129,7 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
                         missingItem.amount == 0 ? "" : ".progressive"
                 );
                 String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name);
-                Formatting formatting = missingItem.isMissing ? Formatting.RED : Formatting.GREEN;
+                Formatting formatting = missingItem.isStillMissing() ? Formatting.RED : Formatting.GREEN;
 
                 tooltip.add(Text.empty());
                 langBuilder()

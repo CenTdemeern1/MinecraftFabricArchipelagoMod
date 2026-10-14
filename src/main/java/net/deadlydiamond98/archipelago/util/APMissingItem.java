@@ -18,37 +18,30 @@ public final class APMissingItem {
     public int amount;
     /// The attempted crafting output
     public Item attemptedCraft;
-    /// Whether the required AP item is actually missing.
-    /// Sometimes false if multiple requirements need to be displayed.
-    public boolean isMissing;
 
     APMissingItem(String name, int amount, Item attemptedCraft) {
         this.name = name;
         this.amount = amount;
         this.attemptedCraft = attemptedCraft;
-        this.isMissing = true;
-    }
-
-    APMissingItem(String name, int amount, Item attemptedCraft, boolean isMissing) {
-        this.name = name;
-        this.amount = amount;
-        this.attemptedCraft = attemptedCraft;
-        this.isMissing = isMissing;
     }
 
     public void serialize(PacketByteBuf buf) {
         buf.writeString(name);
         buf.writeInt(amount);
         buf.writeRegistryValue(Registries.ITEM, attemptedCraft);
-        buf.writeBoolean(isMissing);
     }
 
     public static APMissingItem deserialize(PacketByteBuf buf) {
         String name = buf.readString();
         int amount = buf.readInt();
         Item attemptedCraft = buf.readRegistryValue(Registries.ITEM);
-        boolean isMissing = buf.readBoolean();
-        return new APMissingItem(name, amount, attemptedCraft, isMissing);
+        return new APMissingItem(name, amount, attemptedCraft);
+    }
+
+    public boolean isStillMissing() {
+        return !(amount == 0
+                ? APItemAccessUtil.hasCheck(null, name)
+                : APItemAccessUtil.hasProgressiveCheck(null, name, amount));
     }
 
     @Override
@@ -56,7 +49,6 @@ public final class APMissingItem {
         return other instanceof APMissingItem otherItem
                 && this.name.equals(otherItem.name)
                 && this.amount == otherItem.amount
-                && this.attemptedCraft.equals(otherItem.attemptedCraft)
-                && this.isMissing == otherItem.isMissing;
+                && this.attemptedCraft.equals(otherItem.attemptedCraft);
     }
 }

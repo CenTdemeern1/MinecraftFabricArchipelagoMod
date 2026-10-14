@@ -72,21 +72,25 @@ public class APItemAccessUtil {
     /// Similar to {@link getMissingItemFor} except it also returns an item if its requirements were satisfied
     /// with {@link APMissingItem::isMissing} set to `false`
     public static Optional<APMissingItem> getRequirementFor(ItemConvertible item) {
-        // Prioritize missing requirements first, check unlocked ones after
+        // Prioritize missing requirements first, check unlocked ones after.
+        // Currently, I don't think items are supposed to have multiple requirements,
+        // but it's probably better to handle this case than to falsely display
+        // that an item is unlocked when it has another requirement, causing confusion.
         Optional<APMissingItem> potentialMissingItem = getMissingItemFor(item);
         if (potentialMissingItem.isPresent()) return potentialMissingItem;
 
+        // Find the first available check (which will have been found at this point)
         AtomicReference<APMissingItem> obtainedItem = new AtomicReference<>(null);
         Item itemItem = item.asItem();
         PROGRESSIVE_ITEMS.forEach((key, items) -> {
             Integer tier = items.get(itemItem);
             if (tier != null) {
-                obtainedItem.compareAndSet(null, new APMissingItem(key, tier, itemItem, false));
+                obtainedItem.compareAndSet(null, new APMissingItem(key, tier, itemItem));
             }
         });
         BOOLEAN_ITEMS.forEach((key, items) -> {
             if (items.contains(itemItem)) {
-                obtainedItem.compareAndSet(null, new APMissingItem(key, 0, itemItem, false));
+                obtainedItem.compareAndSet(null, new APMissingItem(key, 0, itemItem));
             }
         });
 
@@ -107,7 +111,7 @@ public class APItemAccessUtil {
      * @param check the name of the check
      * @param amount the amount of the check the player needs
      */
-    public static boolean hasProgressiveCheck(PlayerEntity player, String check, int amount) {
+    public static boolean hasProgressiveCheck(@Nullable PlayerEntity player, String check, int amount) {
         if (APPersistentState.get().getIntCheckValue(check) >= amount) {
             return true;
         }
@@ -121,7 +125,7 @@ public class APItemAccessUtil {
      * @param check the name of the check
      * @param item the item that's associated with the check
      */
-    public static boolean hasProgressiveCheck(PlayerEntity player, String check, ItemConvertible item) {
+    public static boolean hasProgressiveCheck(@Nullable PlayerEntity player, String check, ItemConvertible item) {
         return hasProgressiveCheck(player, check, getTierForProgressive(check, item.asItem()));
     }
 
@@ -130,7 +134,7 @@ public class APItemAccessUtil {
      * @param player the player
      * @param check the name of the check
      */
-    public static boolean hasCheck(PlayerEntity player, String check) {
+    public static boolean hasCheck(@Nullable PlayerEntity player, String check) {
         if (APPersistentState.get().getBooleanCheckValue(check)) {
             return true;
         }

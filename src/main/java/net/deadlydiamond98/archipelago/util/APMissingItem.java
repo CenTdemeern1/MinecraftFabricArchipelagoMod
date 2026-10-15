@@ -17,7 +17,7 @@ public final class APMissingItem {
     /// The name of the attempted crafting output
     public Text attemptedCraft;
 
-    APMissingItem(String name, int amount, Text attemptedCraft) {
+    public APMissingItem(String name, int amount, Text attemptedCraft) {
         this.name = name;
         this.amount = amount;
         this.attemptedCraft = attemptedCraft;

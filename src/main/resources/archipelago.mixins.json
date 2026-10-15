@@ -43,6 +43,7 @@
     "compat.create.ContraptionMixin",
     "compat.create.DeployerBlockEntityMixin",
     "compat.create.KineticBlockEntityMixin",
+    "compat.create.MechanicalMixerBlockEntityMixin",
     "compat.create.MechanicalPressBlockEntityMixin",
     "compat.create.MillstoneBlockEntityMixin",
     "compat.create.MountedItemStorageMixin",

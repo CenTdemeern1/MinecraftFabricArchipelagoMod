@@ -97,7 +97,7 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
                     ((Object) this instanceof BlockBreakingKineticBlockEntity) ? "breaking" : "crafting",
                     missingItem.amount == 0 ? "" : ".progressive"
             );
-            MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft.getName(), itemName, missingItem.amount);
+            MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft, itemName, missingItem.amount);
             cutAndAddTextComponent(description, tooltip);
 
             cir.setReturnValue(true);
@@ -133,7 +133,7 @@ public abstract class KineticBlockEntityMixin extends SmartBlockEntity implement
 
                 tooltip.add(Text.empty());
                 langBuilder()
-                        .translate(translationKey, missingItem.attemptedCraft.getName())
+                        .translate(translationKey, missingItem.attemptedCraft)
                         .style(formatting)
                         .forGoggles(tooltip, 2);
                 langBuilder()

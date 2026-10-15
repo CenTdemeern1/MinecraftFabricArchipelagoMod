@@ -55,14 +55,15 @@ public class APItemAccessUtil {
     public static Optional<APMissingItem> getMissingItemFor(ItemConvertible item) {
         AtomicReference<APMissingItem> missingItem = new AtomicReference<>(null);
         Item itemItem = item.asItem();
+        Text itemName = itemItem.getName();
         PROGRESSIVE_ITEMS.forEach((key, items) -> {
             if (checkIfProgressiveRecipeUnlocked(itemItem, APPersistentState.get().getIntCheckValue(key), items)) {
-                missingItem.compareAndSet(null, new APMissingItem(key, getTierForProgressive(key, itemItem), itemItem));
+                missingItem.compareAndSet(null, new APMissingItem(key, getTierForProgressive(key, itemItem), itemName));
             }
         });
         BOOLEAN_ITEMS.forEach((key, items) -> {
             if (items.contains(itemItem) && !APPersistentState.get().getBooleanCheckValue(key)) {
-                missingItem.compareAndSet(null, new APMissingItem(key, 0, itemItem));
+                missingItem.compareAndSet(null, new APMissingItem(key, 0, itemName));
             }
         });
 
@@ -82,15 +83,16 @@ public class APItemAccessUtil {
         // Find the first available check (which will have been found at this point)
         AtomicReference<APMissingItem> obtainedItem = new AtomicReference<>(null);
         Item itemItem = item.asItem();
+        Text itemName = itemItem.getName();
         PROGRESSIVE_ITEMS.forEach((key, items) -> {
             Integer tier = items.get(itemItem);
             if (tier != null) {
-                obtainedItem.compareAndSet(null, new APMissingItem(key, tier, itemItem));
+                obtainedItem.compareAndSet(null, new APMissingItem(key, tier, itemName));
             }
         });
         BOOLEAN_ITEMS.forEach((key, items) -> {
             if (items.contains(itemItem)) {
-                obtainedItem.compareAndSet(null, new APMissingItem(key, 0, itemItem));
+                obtainedItem.compareAndSet(null, new APMissingItem(key, 0, itemName));
             }
         });
 

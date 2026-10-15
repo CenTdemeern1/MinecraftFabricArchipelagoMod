@@ -8,7 +8,6 @@ import net.createmod.catnip.lang.FontHelper;
 import net.createmod.catnip.lang.LangBuilder;
 import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
-import net.deadlydiamond98.archipelago.common.world.APPersistentState;
 import net.deadlydiamond98.archipelago.networking.s2c.MissingAPItemForCreateS2CPacket;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;

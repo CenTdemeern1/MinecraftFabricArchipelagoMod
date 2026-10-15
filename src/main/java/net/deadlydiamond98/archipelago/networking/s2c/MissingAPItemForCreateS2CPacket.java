@@ -10,9 +10,11 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.BlockPos;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MissingAPItemForCreateS2CPacket {
@@ -39,6 +41,17 @@ public class MissingAPItemForCreateS2CPacket {
 
         for (ServerPlayerEntity player : players) {
             ServerPlayNetworking.send(player, ID, buf);
+        }
+    }
+
+    public static void checkAndChangeMultiple(ServerWorld world, BlockPos[] positions, APMissingItem[] missingItems) {
+        for (BlockPos position : positions) {
+            // If any are different, just commit and refresh all of them
+            if (world.getBlockEntity(position) instanceof IMissingAPItemsAccessor accessor
+                    && !Arrays.equals(missingItems, accessor.archipelago$getMissingAPItems())) {
+                send(world.getPlayers(), positions, missingItems);
+                return;
+            }
         }
     }
 

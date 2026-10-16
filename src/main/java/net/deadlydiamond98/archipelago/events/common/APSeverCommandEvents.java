@@ -38,6 +38,14 @@ public class APSeverCommandEvents {
             if (FabricLoader.getInstance().isDevelopmentEnvironment()) {
                 dispatcher.register(CommandManager.literal("apDebug")
                         .then(CommandManager.argument("check", StringArgumentType.string())
+                                .then(CommandManager.literal("trigger")
+                                        .executes(context -> {
+                                            APPersistentState.get().triggerCheck(
+                                                    StringArgumentType.getString(context, "check")
+                                            );
+                                            return 1;
+                                        })
+                                )
                                 .then(CommandManager.literal("progressive")
                                         .then(CommandManager.argument("value", IntegerArgumentType.integer(0))
                                                 .executes(context -> {

@@ -59,7 +59,7 @@ dependencies {
 	modCompileOnly "me.shedaniel.cloth:cloth-config-fabric:${cloth_config_version}"
 	modCompileOnly "me.shedaniel:RoughlyEnoughItems-fabric:${rei_version}"
 
-	modCompileOnly "com.simibubi.create:create-fabric:$create_version"
+	modCompileOnly "com.simibubi.create:create-fabric:${create_version}"
 }
 
 processResources {

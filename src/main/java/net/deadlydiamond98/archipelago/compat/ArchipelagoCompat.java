@@ -3,6 +3,7 @@ package net.deadlydiamond98.archipelago.compat;
 import java.util.Set;
 
 import net.deadlydiamond98.archipelago.archipelago.Archipelago;
+import net.deadlydiamond98.archipelago.compat.create.CreateCompat;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.world.ServerWorld;
 

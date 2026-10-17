@@ -1,4 +1,4 @@
-package net.deadlydiamond98.archipelago.compat;
+package net.deadlydiamond98.archipelago.compat.create;
 
 import com.simibubi.create.api.contraption.BlockMovementChecks;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;

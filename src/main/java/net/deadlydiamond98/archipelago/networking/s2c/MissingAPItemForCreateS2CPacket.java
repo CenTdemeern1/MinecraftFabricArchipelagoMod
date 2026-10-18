@@ -21,12 +21,12 @@ public class MissingAPItemForCreateS2CPacket {
     public static final Identifier ID = APMod.id("missing_ap_item_for_create");
 
     /// Send the packet.
-    /// @param players The players to send this packet to
+    /// @param world The {@link ServerWorld} whose players to send this packet to
     /// @param positions The block positions these missing items apply to.
     ///                  For example, the entire wall of mechanical crafters.
     /// @param missingItems The list of missing items.
     ///                     A single recipe might be missing multiple unlocks for all of its outputs.
-    public static void send(List<ServerPlayerEntity> players, BlockPos[] positions, APMissingItem[] missingItems) {
+    public static void send(ServerWorld world, BlockPos[] positions, APMissingItem[] missingItems) {
         PacketByteBuf buf = PacketByteBufs.create();
 
         buf.writeInt(positions.length);
@@ -39,19 +39,8 @@ public class MissingAPItemForCreateS2CPacket {
             missingItem.serialize(buf);
         }
 
-        for (ServerPlayerEntity player : players) {
+        for (ServerPlayerEntity player : world.getPlayers()) {
             ServerPlayNetworking.send(player, ID, buf);
-        }
-    }
-
-    public static void checkAndChangeMultiple(ServerWorld world, BlockPos[] positions, APMissingItem[] missingItems) {
-        for (BlockPos position : positions) {
-            // If any are different, just commit and refresh all of them
-            if (world.getBlockEntity(position) instanceof IMissingAPItemsAccessor accessor
-                    && !Arrays.equals(missingItems, accessor.archipelago$getMissingAPItems())) {
-                send(world.getPlayers(), positions, missingItems);
-                return;
-            }
         }
     }
 

@@ -69,6 +69,9 @@
   "archipelago.compat.create.breaking.requires_check": "Could not break _%1$s_ because it requires _%2$s_.",
   "archipelago.compat.create.breaking.requires_check.progressive": "Could not break _%1$s_ because it requires _%2$s (x%3$d)_.",
 
+  "archipelago.compat.create.item_transport.requires_check": "Could not move items to/from _%1$s_ because it requires _%2$s_.",
+  "archipelago.compat.create.item_transport.requires_check.progressive": "Could not move items to/from _%1$s_ because it requires _%2$s (x%3$d)_.",
+
   "advancements.legacy.root.title": "Legacy and Bedrock",
   "advancements.legacy.root.description": "Root Advancement for Archipelago Advancements based off 1.12 Achievements and Bedrock Achievements",
 

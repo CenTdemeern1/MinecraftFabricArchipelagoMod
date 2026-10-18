@@ -1,19 +1,31 @@
-package net.deadlydiamond98.archipelago.compat.create;
+package net.deadlydiamond98.archipelago.compat.create.requirements;
 
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 
 import java.util.Arrays;
 import java.util.List;
 
 /// Displays a list of outputs which will be filtered out if their AP item requirements aren't met
-public class CreateAPRequirementOutputFilter extends CreateDisplayableAPRequirement {
-    public CreateAPRequirementOutputFilter(BlockEntity blockEntity) {
+@MethodsReturnNonnullByDefault
+public class CreateOutputFilterAPRequirement extends CreateDisplayableAPRequirement {
+    public CreateOutputFilterAPRequirement(BlockEntity blockEntity) {
         super(blockEntity);
+    }
+
+    public CreateOutputFilterAPRequirement(BlockEntity blockEntity, APMissingItem[] missingAPItems) {
+        super(blockEntity, missingAPItems);
+    }
+
+    @Override
+    public CreateAPRequirementKind getKind() {
+        return CreateAPRequirementKind.OUTPUT_FILTER;
     }
 
     @Override

@@ -1,22 +1,27 @@
-package net.deadlydiamond98.archipelago.compat.create;
+package net.deadlydiamond98.archipelago.compat.create.requirements;
 
-import com.simibubi.create.content.kinetics.base.BlockBreakingKineticBlockEntity;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 import net.minecraft.util.Formatting;
+import net.minecraft.util.annotation.MethodsReturnNonnullByDefault;
 
 import java.util.List;
 
 /// Displays a single missing AP item requirement
+@MethodsReturnNonnullByDefault
 public abstract class CreateSingleAPRequirement extends CreateDisplayableAPRequirement {
     protected CreateSingleAPRequirement(BlockEntity blockEntity) {
         super(blockEntity);
     }
 
-    protected abstract String getKind();
+    protected CreateSingleAPRequirement(BlockEntity blockEntity, APMissingItem[] missingAPItems) {
+        super(blockEntity, missingAPItems);
+    }
+
+    protected abstract String getTranslationSegment();
 
     @Override
     protected boolean renderTooltip(List<Text> tooltip) {
@@ -31,7 +36,7 @@ public abstract class CreateSingleAPRequirement extends CreateDisplayableAPRequi
 
         String translationKey = String.format(
                 "archipelago.compat.create.%s.requires_check%s",
-                this.getKind(),
+                this.getTranslationSegment(),
                 missingItem.amount == 0 ? "" : ".progressive"
         );
         MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft, itemName, missingItem.amount);

@@ -40,6 +40,7 @@
     "compat.create.BlockBreakingKineticBlockEntityMixin",
     "compat.create.BlockBreakingMovementBehaviorMixin",
     "compat.create.BlueprintEntityMixin",
+    "compat.create.ChuteBlockEntityMixin",
     "compat.create.ContraptionMixin",
     "compat.create.CrushingWheelControllerBlockEntityMixin",
     "compat.create.DeployerBlockEntityMixin",

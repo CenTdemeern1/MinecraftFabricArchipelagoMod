@@ -6,12 +6,14 @@ import net.deadlydiamond98.archipelago.init.APTags;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
+import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -38,6 +40,11 @@ public class APItemAccessUtil {
 
     public static Optional<APMissingItem> getMissingItemToBreak(BlockState state) {
         if (!state.isIn(APTags.ARCHIPELAGO_LOCK_BREAKING)) return Optional.empty();
+        return getMissingItemFor(state.getBlock().asItem());
+    }
+
+    public static Optional<APMissingItem> getMissingItemToInteract(BlockState state) {
+        if (!state.isIn(APTags.ARCHIPELAGO_LOCK_INTERACTION)) return Optional.empty();
         return getMissingItemFor(state.getBlock().asItem());
     }
 

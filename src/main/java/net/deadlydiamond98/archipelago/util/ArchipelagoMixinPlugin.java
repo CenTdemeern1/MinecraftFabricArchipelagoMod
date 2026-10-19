@@ -35,6 +35,7 @@ public class ArchipelagoMixinPlugin implements IMixinConfigPlugin {
                 "net.deadlydiamond98.archipelago.mixin.compat.create.SawBlockEntityMixin",
                 "net.deadlydiamond98.archipelago.mixin.compat.create.MechanicalCrafterBlockEntityMixin",
                 "net.deadlydiamond98.archipelago.mixin.compat.create.CrushingWheelControllerBlockEntityMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.ChuteBlockEntityMixin",
         };
         Supplier<Boolean> createLoadedSupplier = () -> APMod.isModLoaded("create");
         for (String createMixin : createMixins) {

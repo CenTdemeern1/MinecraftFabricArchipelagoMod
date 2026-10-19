@@ -15,14 +15,31 @@ import java.util.Arrays;
 
 @MethodsReturnNonnullByDefault
 public class CreateAPRequirementUtil {
-    public void changeSingleNullable(BlockEntity blockEntity, @Nullable APMissingItem missingItem, CreateAPRequirementKind kind) {
+    public static void changeSingleNullable(
+            BlockEntity blockEntity,
+            @Nullable APMissingItem missingItem,
+            CreateAPRequirementKind kind
+    ) {
         if (!(blockEntity.getWorld() instanceof ServerWorld serverWorld)) return;
         APMissingItem[] array = arrayFromNullable(missingItem);
         if (!setMissingItems(blockEntity, array, kind)) return;
         MissingAPItemForCreateS2CPacket.send(serverWorld, new BlockPos[] { blockEntity.getPos() }, array);
     }
 
-    public void changeMultiple(BlockEntity[] blockEntities, APMissingItem[] missingItems, CreateAPRequirementKind kind) {
+    public static void changeMultipleNullable(
+            BlockEntity[] blockEntities,
+            @Nullable APMissingItem missingItem,
+            CreateAPRequirementKind kind
+    ) {
+        APMissingItem[] array = arrayFromNullable(missingItem);
+        changeMultiple(blockEntities, array, kind);
+    }
+
+    public static void changeMultiple(
+            BlockEntity[] blockEntities,
+            APMissingItem[] missingItems,
+            CreateAPRequirementKind kind
+    ) {
         if (blockEntities.length == 0) return;
         if (!(blockEntities[0].getWorld() instanceof ServerWorld serverWorld)) return;
         boolean needsNotify = false;
@@ -34,7 +51,7 @@ public class CreateAPRequirementUtil {
         MissingAPItemForCreateS2CPacket.send(serverWorld, positions, missingItems);
     }
 
-    private boolean setMissingItems(
+    private static boolean setMissingItems(
             BlockEntity blockEntity,
             APMissingItem[] missingItems,
             CreateAPRequirementKind kind
@@ -57,7 +74,7 @@ public class CreateAPRequirementUtil {
         return true;
     }
 
-    private APMissingItem[] arrayFromNullable(@Nullable APMissingItem missingItem) {
+    private static APMissingItem[] arrayFromNullable(@Nullable APMissingItem missingItem) {
         if (missingItem == null)
             return new APMissingItem[0];
         else

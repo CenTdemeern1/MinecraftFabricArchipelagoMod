@@ -33,7 +33,7 @@ public interface IMissingAPItemsAccessor {
         BlockEntity blockEntity = archipelago$getBlockEntity();
         if (blockEntity.getWorld() instanceof ServerWorld serverWorld) {
             MissingAPItemForCreateS2CPacket.send(
-                    serverWorld.getPlayers(),
+                    serverWorld,
                     new BlockPos[] { blockEntity.getPos() },
                     items
             );

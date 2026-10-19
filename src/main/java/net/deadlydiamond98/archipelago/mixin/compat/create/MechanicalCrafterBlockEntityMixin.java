@@ -4,6 +4,8 @@ import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.content.kinetics.crafter.MechanicalCrafterBlockEntity;
 import com.simibubi.create.content.kinetics.crafter.RecipeGridHandler;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.networking.s2c.MissingAPItemForCreateS2CPacket;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
@@ -23,16 +25,17 @@ public class MechanicalCrafterBlockEntityMixin {
     @WrapOperation(method = "tick", at = @At(value = "INVOKE", target = "Lcom/simibubi/create/content/kinetics/crafter/RecipeGridHandler;tryToApplyRecipe(Lnet/minecraft/world/World;Lcom/simibubi/create/content/kinetics/crafter/RecipeGridHandler$GroupedItems;)Lnet/minecraft/item/ItemStack;"))
     ItemStack filterRecipeOutput(World world, RecipeGridHandler.GroupedItems items, Operation<ItemStack> original) {
         ItemStack output = original.call(world, items);
-        if (!(world instanceof ServerWorld serverWorld)) return output;
+        if (output == null) return null;
         Optional<APMissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(output.getItem());
+        BlockEntity[] blockEntities = RecipeGridHandler
+                .getAllCraftersOfChain((MechanicalCrafterBlockEntity) (Object) this)
+                .toArray(BlockEntity[]::new);
+        CreateAPRequirementUtil.changeMultipleNullable(
+                blockEntities,
+                potentialMissingItem.orElse(null),
+                CreateAPRequirementKind.CRAFTING
+        );
         if (potentialMissingItem.isPresent()) {
-            APMissingItem missingItem = potentialMissingItem.get();
-            BlockPos[] positions = RecipeGridHandler
-                    .getAllCraftersOfChain((MechanicalCrafterBlockEntity) (Object) this)
-                    .stream()
-                    .map(BlockEntity::getPos)
-                    .toArray(BlockPos[]::new);
-            MissingAPItemForCreateS2CPacket.checkAndChangeMultiple(serverWorld, positions, new APMissingItem[] {missingItem});
             return null;
         }
         return output;

@@ -11,6 +11,7 @@ import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
 import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.compat.create.requirements.CreateCraftingAPRequirement;
 import net.deadlydiamond98.archipelago.compat.create.requirements.CreateDisplayableAPRequirement;
+import net.deadlydiamond98.archipelago.compat.create.requirements.CreateOutputFilterAPRequirement;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.deadlydiamond98.archipelago.util.mixinterfaces.IDisplayableRequirementAccessor;
@@ -35,7 +36,7 @@ import java.util.Optional;
 public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlockEntity implements IDisplayableRequirementAccessor, IHaveHoveringInformation {
     @Unique
     @NotNull
-    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateCraftingAPRequirement(this);
+    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateOutputFilterAPRequirement(this);
 
     public CrushingWheelControllerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);

@@ -5,11 +5,12 @@ import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
 import com.simibubi.create.AllRecipeTypes;
 import com.simibubi.create.content.kinetics.millstone.MillingRecipe;
 import com.simibubi.create.content.kinetics.millstone.MillstoneBlockEntity;
-import net.deadlydiamond98.archipelago.APMod;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.fabricmc.fabric.api.transfer.v1.transaction.Transaction;
+import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
@@ -53,10 +54,11 @@ public class MillstoneBlockEntityMixin {
                 .distinct()
                 .flatMap(i -> APItemAccessUtil.getRequirementFor(i).stream())
                 .toArray(APMissingItem[]::new);
+        BlockEntity blockEntity = (BlockEntity) (Object) this;
         if (output.length > 0 && Arrays.stream(output).anyMatch(APMissingItem::isStillMissing)) {
-            ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItems(output);
+            CreateAPRequirementUtil.changeSingle(blockEntity, output, CreateAPRequirementKind.OUTPUT_FILTER);
         } else {
-            ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(null);
+            CreateAPRequirementUtil.clearSingle(blockEntity);
         }
         return foundRecipe;
     }

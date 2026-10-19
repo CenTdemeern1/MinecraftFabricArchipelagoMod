@@ -7,9 +7,10 @@ import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
 import com.simibubi.create.content.kinetics.mixer.MixingRecipe;
 import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -51,12 +52,14 @@ public class MechanicalMixerBlockEntityMixin extends KineticBlockEntity {
                 }
             }
         }
+        CreateAPRequirementUtil.changeSingleNullable(
+                this,
+                potentialMissingItem.orElse(null),
+                CreateAPRequirementKind.CRAFTING
+        );
         if (potentialMissingItem.isPresent()) {
-            APMissingItem missingItem = potentialMissingItem.get();
-            ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(missingItem);
             return new ArrayList<>();
         }
-        ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(null);
         return recipes;
     }
 }

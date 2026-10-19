@@ -1,20 +1,20 @@
 package net.deadlydiamond98.archipelago.mixin.compat.create;
 
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.kinetics.press.MechanicalPressBlockEntity;
 import com.simibubi.create.content.kinetics.press.PressingRecipe;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.registry.DynamicRegistryManager;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.injection.At;
-import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 import java.util.Optional;
 
@@ -27,18 +27,22 @@ public abstract class MechanicalPressBlockEntityMixin extends BasinOperatingBloc
     // Filtering the recipe like this will let locked recipes pass underneath the press on a belt, instead of waiting.
     // Because the recipe isn't checked again, this wouldn't get the item unstuck if the recipe is unlocked later.
     // At least, that's my justification for having this naïve implementation.
-    @Inject(method = "getRecipe", at = @At("RETURN"), cancellable = true)
-    void filterRecipe(ItemStack item, CallbackInfoReturnable<Optional<PressingRecipe>> cir) {
-        Optional<PressingRecipe> potentialRecipe = cir.getReturnValue();
-        if (potentialRecipe.isEmpty()) return;
+    @WrapMethod(method = "getRecipe")
+    Optional<PressingRecipe> filterRecipe(ItemStack item, Operation<Optional<PressingRecipe>> original) {
+        Optional<PressingRecipe> potentialRecipe = original.call(item);
+        if (potentialRecipe.isEmpty() || world == null) return potentialRecipe;
         PressingRecipe recipe = potentialRecipe.get();
-        if (world == null) return;
         DynamicRegistryManager registryAccess = world.getRegistryManager();
         ItemStack output = recipe.getOutput(registryAccess);
         Optional<APMissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(output.getItem());
-        ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(potentialMissingItem.orElse(null));
+        CreateAPRequirementUtil.changeSingleNullable(
+                this,
+                potentialMissingItem.orElse(null),
+                CreateAPRequirementKind.CRAFTING
+        );
         if (potentialMissingItem.isPresent()) {
-            cir.setReturnValue(Optional.empty());
+            return Optional.empty();
         }
+        return potentialRecipe;
     }
 }

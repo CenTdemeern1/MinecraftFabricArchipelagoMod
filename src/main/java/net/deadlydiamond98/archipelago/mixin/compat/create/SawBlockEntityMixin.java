@@ -4,9 +4,10 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.saw.SawBlockEntity;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
@@ -43,7 +44,7 @@ public class SawBlockEntityMixin extends KineticBlockEntity {
             }
         }
         APMissingItem[] missingItemsArray = missingItems.toArray(new APMissingItem[0]);
-        ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItems(missingItemsArray);
+        CreateAPRequirementUtil.changeSingle(this, missingItemsArray, CreateAPRequirementKind.OUTPUT_FILTER);
         return recipes;
     }
 }

@@ -32,7 +32,7 @@ public class CreateOutputFilterAPRequirement extends CreateDisplayableAPRequirem
     protected boolean renderTooltip(List<Text> tooltip) {
         long unlockedItems = Arrays.stream(missingAPItems).filter(i -> !i.isStillMissing()).count();
         if (unlockedItems == missingAPItems.length)
-            return false; // State has changed in the meantime and the popup is no longer necessary
+            return false; // State has changed in the meantime and the popup is no longer necessary, or we have 0 items
 
         langBuilder()
                 .translate("compat.create.crafting.some_missing.heading")

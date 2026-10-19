@@ -20,10 +20,33 @@ public class CreateAPRequirementUtil {
             @Nullable APMissingItem missingItem,
             CreateAPRequirementKind kind
     ) {
-        if (!(blockEntity.getWorld() instanceof ServerWorld serverWorld)) return;
         APMissingItem[] array = arrayFromNullable(missingItem);
-        if (!setMissingItems(blockEntity, array, kind)) return;
-        MissingAPItemForCreateS2CPacket.send(serverWorld, new BlockPos[] { blockEntity.getPos() }, array);
+        changeSingle(blockEntity, array, kind);
+    }
+
+    public static void changeSingle(
+            BlockEntity blockEntity,
+            APMissingItem[] missingItems,
+            CreateAPRequirementKind kind
+    ) {
+        if (!setMissingItems(blockEntity, missingItems, kind)) return;
+        if (!(blockEntity.getWorld() instanceof ServerWorld serverWorld)) return;
+        MissingAPItemForCreateS2CPacket.send(serverWorld, new BlockPos[] { blockEntity.getPos() }, missingItems, kind);
+    }
+
+    public static void clearSingle(BlockEntity blockEntity) {
+        IDisplayableRequirementAccessor accessor = getAccessor(blockEntity);
+        if (accessor == null) return;
+        CreateDisplayableAPRequirement requirement = accessor.archipelago$getDisplayableRequirement();
+        if (requirement.missingAPItems.length == 0) return;
+        requirement.missingAPItems = new APMissingItem[0];
+        if (!(blockEntity.getWorld() instanceof ServerWorld serverWorld)) return;
+        MissingAPItemForCreateS2CPacket.send(
+                serverWorld,
+                new BlockPos[] { blockEntity.getPos() },
+                requirement.missingAPItems,
+                requirement.getKind()
+        );
     }
 
     public static void changeMultipleNullable(
@@ -41,29 +64,24 @@ public class CreateAPRequirementUtil {
             CreateAPRequirementKind kind
     ) {
         if (blockEntities.length == 0) return;
-        if (!(blockEntities[0].getWorld() instanceof ServerWorld serverWorld)) return;
         boolean needsNotify = false;
         for (BlockEntity blockEntity : blockEntities) {
             needsNotify |= setMissingItems(blockEntity, missingItems, kind);
         }
-        if (!needsNotify) return;
+        if (!needsNotify || !(blockEntities[0].getWorld() instanceof ServerWorld serverWorld)) return;
         BlockPos[] positions = Arrays.stream(blockEntities).map(BlockEntity::getPos).toArray(BlockPos[]::new);
-        MissingAPItemForCreateS2CPacket.send(serverWorld, positions, missingItems);
+        MissingAPItemForCreateS2CPacket.send(serverWorld, positions, missingItems, kind);
     }
 
+    /// Tries to set the displayable missing items popup's contents. Returns whether anything actually changed.
+    /// If nothing changed, this action does not need to be synchronized to the client.
     private static boolean setMissingItems(
             BlockEntity blockEntity,
             APMissingItem[] missingItems,
             CreateAPRequirementKind kind
     ) {
-        if (!(blockEntity instanceof IDisplayableRequirementAccessor accessor)) {
-            APMod.LOGGER.error(
-                    "Just tried accessing the Displayable Requirement of {} " +
-                            "which doesn't implement IDisplayableRequirementAccessor",
-                    blockEntity.getClass()
-            );
-            return false;
-        }
+        IDisplayableRequirementAccessor accessor = getAccessor(blockEntity);
+        if (accessor == null) return false;
         CreateDisplayableAPRequirement requirement = accessor.archipelago$getDisplayableRequirement();
         if (requirement.getKind() == kind) {
             if (Arrays.equals(requirement.missingAPItems, missingItems)) return false;
@@ -72,6 +90,20 @@ public class CreateAPRequirementUtil {
             accessor.archipelago$setDisplayableRequirement(kind.instantiate(blockEntity, missingItems));
         }
         return true;
+    }
+
+    @Nullable
+    private static IDisplayableRequirementAccessor getAccessor(BlockEntity blockEntity) {
+        if (blockEntity instanceof IDisplayableRequirementAccessor accessor) {
+            return accessor;
+        } else {
+            APMod.LOGGER.error(
+                    "Just tried accessing the Displayable Requirement of {} " +
+                            "which doesn't implement IDisplayableRequirementAccessor",
+                    blockEntity.getClass()
+            );
+            return null;
+        }
     }
 
     private static APMissingItem[] arrayFromNullable(@Nullable APMissingItem missingItem) {

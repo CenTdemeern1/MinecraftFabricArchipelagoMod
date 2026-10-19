@@ -8,8 +8,6 @@ import net.deadlydiamond98.archipelago.compat.create.requirements.CreateCrafting
 import net.deadlydiamond98.archipelago.compat.create.requirements.CreateDisplayableAPRequirement;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
 import net.deadlydiamond98.archipelago.util.mixinterfaces.IDisplayableRequirementAccessor;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IDisplaysMissingAPItemsForCreate;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
@@ -22,43 +20,29 @@ import org.spongepowered.asm.mixin.Unique;
 import java.util.List;
 
 @Mixin(KineticBlockEntity.class)
-public abstract class KineticBlockEntityMixin extends SmartBlockEntity implements IMissingAPItemsAccessor, IDisplaysMissingAPItemsForCreate, IDisplayableRequirementAccessor {
+public abstract class KineticBlockEntityMixin extends SmartBlockEntity implements IDisplayableRequirementAccessor {
     @Unique
     @NotNull
-    private APMissingItem[] archipelago$missingAPItems = new APMissingItem[0];
-    @Unique
-    @NotNull
-    private CreateDisplayableAPRequirement archipelago$dispRequirement = new CreateCraftingAPRequirement(this);
-
-    @Override
-    public @NotNull CreateDisplayableAPRequirement archipelago$getDisplayableRequirement() {
-        return archipelago$dispRequirement;
-    }
-
-    @Override
-    public void archipelago$setDisplayableRequirement(@NotNull CreateDisplayableAPRequirement requirement) {
-        archipelago$dispRequirement = requirement;
-    }
+    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateCraftingAPRequirement(this);
 
     public KineticBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    public void archipelago$setMissingAPItems(@NotNull APMissingItem[] missingItems) {
-        archipelago$missingAPItems = missingItems;
+    @Override
+    public @NotNull CreateDisplayableAPRequirement archipelago$getDisplayableRequirement() {
+        return archipelago$displayableRequirement;
     }
 
-    public APMissingItem[] archipelago$getMissingAPItems() {
-        return archipelago$missingAPItems;
-    }
-
-    public BlockEntity archipelago$getBlockEntity() {
-        return this;
+    @Override
+    public void archipelago$setDisplayableRequirement(@NotNull CreateDisplayableAPRequirement requirement) {
+        archipelago$displayableRequirement = requirement;
     }
 
     @WrapMethod(method = "addToTooltip", remap = false)
     boolean addMissingAPItemTooltip(List<Text> tooltip, boolean isPlayerSneaking, Operation<Boolean> original) {
-        boolean originalOutput = original.call(tooltip, isPlayerSneaking);
-        return archipelago$addMissingAPItemTooltip(tooltip, originalOutput);
+        // Important: This needs to not short circuit
+        return original.call(tooltip, isPlayerSneaking)
+                | archipelago$displayableRequirement.addToTooltip(tooltip, isPlayerSneaking);
     }
 }

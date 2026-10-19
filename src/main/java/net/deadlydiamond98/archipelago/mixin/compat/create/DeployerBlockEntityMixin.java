@@ -4,9 +4,10 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.deployer.DeployerBlockEntity;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
@@ -31,12 +32,14 @@ public class DeployerBlockEntityMixin extends KineticBlockEntity {
         DynamicRegistryManager registryAccess = world.getRegistryManager();
         ItemStack output = recipe.getOutput(registryAccess);
         Optional<APMissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(output.getItem());
+        CreateAPRequirementUtil.changeSingleNullable(
+                this,
+                potentialMissingItem.orElse(null),
+                CreateAPRequirementKind.CRAFTING
+        );
         if (potentialMissingItem.isPresent()) {
-            APMissingItem missingItem = potentialMissingItem.get();
-            ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(missingItem);
             return null;
         }
-        ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(null);
         return recipe;
     }
 }

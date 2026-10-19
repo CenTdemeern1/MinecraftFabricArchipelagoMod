@@ -2,21 +2,18 @@ package net.deadlydiamond98.archipelago.mixin.compat.create;
 
 import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.simibubi.create.content.fluids.potion.PotionFluid;
 import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.mixer.MechanicalMixerBlockEntity;
-import com.simibubi.create.content.kinetics.mixer.MixingRecipe;
 import com.simibubi.create.content.processing.basin.BasinOperatingBlockEntity;
-import io.github.fabricators_of_create.porting_lib.fluids.FluidStack;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.item.ItemStack;
 import net.minecraft.recipe.Recipe;
 import net.minecraft.registry.DynamicRegistryManager;
-import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 import org.spongepowered.asm.mixin.Mixin;
 
@@ -40,12 +37,14 @@ public class BasinOperatingBlockEntityMixin extends KineticBlockEntity {
         Recipe<?> recipe = recipes.get(0); // Basin operating block entities always take the first (best) recipe
         ItemStack itemStack = recipe.getOutput(manager);
         Optional<APMissingItem> potentialMissingItem = APItemAccessUtil.getMissingItemFor(itemStack.getItem());
+        CreateAPRequirementUtil.changeSingleNullable(
+                this,
+                potentialMissingItem.orElse(null),
+                CreateAPRequirementKind.CRAFTING
+        );
         if (potentialMissingItem.isPresent()) {
-            APMissingItem missingItem = potentialMissingItem.get();
-            ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(missingItem);
             return new ArrayList<>();
         }
-        ((IMissingAPItemsAccessor)this).archipelago$changeMissingAPItem(null);
         return recipes;
     }
 }

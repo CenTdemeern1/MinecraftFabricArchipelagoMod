@@ -4,16 +4,17 @@ import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.sugar.Local;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlockEntity;
 import com.simibubi.create.content.processing.recipe.ProcessingRecipe;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
+import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
+import net.deadlydiamond98.archipelago.compat.create.requirements.CreateCraftingAPRequirement;
+import net.deadlydiamond98.archipelago.compat.create.requirements.CreateDisplayableAPRequirement;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IDisplaysMissingAPItemsForCreate;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IMissingAPItemsAccessor;
+import net.deadlydiamond98.archipelago.util.mixinterfaces.IDisplayableRequirementAccessor;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.item.ItemStack;
@@ -31,30 +32,28 @@ import java.util.List;
 import java.util.Optional;
 
 @Mixin(CrushingWheelControllerBlockEntity.class)
-public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlockEntity implements IMissingAPItemsAccessor, IDisplaysMissingAPItemsForCreate, IHaveHoveringInformation {
+public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlockEntity implements IDisplayableRequirementAccessor, IHaveHoveringInformation {
     @Unique
     @NotNull
-    private APMissingItem[] archipelago$missingAPItems = new APMissingItem[0];
+    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateCraftingAPRequirement(this);
 
     public CrushingWheelControllerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
     }
 
-    public void archipelago$setMissingAPItems(@NotNull APMissingItem[] missingItems) {
-        archipelago$missingAPItems = missingItems;
+    @Override
+    public @NotNull CreateDisplayableAPRequirement archipelago$getDisplayableRequirement() {
+        return archipelago$displayableRequirement;
     }
 
-    public APMissingItem[] archipelago$getMissingAPItems() {
-        return archipelago$missingAPItems;
-    }
-
-    public BlockEntity archipelago$getBlockEntity() {
-        return this;
+    @Override
+    public void archipelago$setDisplayableRequirement(@NotNull CreateDisplayableAPRequirement requirement) {
+        archipelago$displayableRequirement = requirement;
     }
 
     @Override
     public boolean addToTooltip(List<Text> tooltip, boolean isPlayerSneaking) {
-        return archipelago$addMissingAPItemTooltip(tooltip, false);
+        return archipelago$displayableRequirement.addToTooltip(tooltip, isPlayerSneaking);
     }
 
     @WrapMethod(method = "findRecipe", remap = false)
@@ -70,9 +69,9 @@ public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlock
                 .flatMap(i -> APItemAccessUtil.getRequirementFor(i).stream())
                 .toArray(APMissingItem[]::new);
         if (output.length > 0 && Arrays.stream(output).anyMatch(APMissingItem::isStillMissing)) {
-            this.archipelago$changeMissingAPItems(output);
+            CreateAPRequirementUtil.changeSingle(this, output, CreateAPRequirementKind.OUTPUT_FILTER);
         } else {
-            this.archipelago$changeMissingAPItem(null);
+            CreateAPRequirementUtil.clearSingle(this);
         }
         return foundRecipe;
     }

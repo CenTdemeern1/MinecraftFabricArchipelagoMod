@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-// Mostly copy-paste from BasinOperatingBlockEntityMixin.java, will refactor later
 @Mixin(MechanicalMixerBlockEntity.class)
 public class MechanicalMixerBlockEntityMixin extends KineticBlockEntity {
     public MechanicalMixerBlockEntityMixin(BlockEntityType<?> typeIn, BlockPos pos, BlockState state) {

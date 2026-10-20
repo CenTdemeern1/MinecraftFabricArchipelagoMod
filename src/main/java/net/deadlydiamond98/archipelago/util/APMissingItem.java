@@ -3,8 +3,6 @@ package net.deadlydiamond98.archipelago.util;
 import net.minecraft.network.PacketByteBuf;
 import net.minecraft.text.Text;
 
-import java.util.Optional;
-
 // I would have used a record, but I don't want to write getters for all the fields
 /// An item that is required and (potentially) missing for a specific crafting output.
 /// Used to display missing item requirements.

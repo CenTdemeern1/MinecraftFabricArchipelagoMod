@@ -1,7 +1,6 @@
 package net.deadlydiamond98.archipelago.mixin.compat.create;
 
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
-import com.simibubi.create.content.kinetics.base.KineticBlockEntity;
 import com.simibubi.create.content.kinetics.crusher.CrushingWheelControllerBlockEntity;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.content.logistics.funnel.FunnelBlockEntity;

@@ -1,39 +1,24 @@
 package net.deadlydiamond98.archipelago.mixin.compat.create;
 
-import com.llamalad7.mixinextras.expression.Definition;
-import com.llamalad7.mixinextras.expression.Expression;
-import com.llamalad7.mixinextras.sugar.Local;
-import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.logistics.chute.ChuteBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
-import net.createmod.catnip.animation.LerpedFloat;
 import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
 import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
-import net.deadlydiamond98.archipelago.compat.create.requirements.CreateDisplayableAPRequirement;
-import net.deadlydiamond98.archipelago.compat.create.requirements.CreateItemTransportAPRequirement;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 import net.deadlydiamond98.archipelago.util.APMissingItem;
-import net.deadlydiamond98.archipelago.util.mixinterfaces.IDisplayableRequirementAccessor;
 import net.fabricmc.fabric.api.transfer.v1.item.ItemVariant;
 import net.fabricmc.fabric.api.transfer.v1.storage.Storage;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
-import net.minecraft.item.ItemStack;
-import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-import java.util.List;
 import java.util.Optional;
 import java.util.stream.Stream;
 

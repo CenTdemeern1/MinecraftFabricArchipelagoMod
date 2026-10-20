@@ -6,14 +6,12 @@ import net.deadlydiamond98.archipelago.init.APTags;
 import net.deadlydiamond98.koalalib.init.KoalaLibSounds;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
-import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemConvertible;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;

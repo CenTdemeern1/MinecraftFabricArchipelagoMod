@@ -39,6 +39,7 @@
     "compat.create.AbstractFunnelBlockMixin",
     "compat.create.AddDisplayableRequirementMixin",
     "compat.create.BasinOperatingBlockEntityMixin",
+    "compat.create.BeltFunnelInteractionHandlerMixin",
     "compat.create.BlockBreakingKineticBlockEntityMixin",
     "compat.create.BlockBreakingMovementBehaviorMixin",
     "compat.create.BlueprintEntityMixin",

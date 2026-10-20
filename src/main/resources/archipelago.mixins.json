@@ -52,6 +52,8 @@
     "compat.create.MechanicalPressBlockEntityMixin",
     "compat.create.MillstoneBlockEntityMixin",
     "compat.create.MountedItemStorageMixin",
+    "compat.create.PackagerBlockEntityMixin",
+    "compat.create.RepackagerBlockEntityMixin",
     "compat.create.SawBlockEntityMixin",
     "compat.explorerscompass.StructureUtilsGroupSearchMixin",
     "compat.jade.DisplayHelperMixin",

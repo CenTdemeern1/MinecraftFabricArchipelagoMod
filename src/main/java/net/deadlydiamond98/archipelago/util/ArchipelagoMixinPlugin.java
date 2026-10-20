@@ -38,6 +38,8 @@ public class ArchipelagoMixinPlugin implements IMixinConfigPlugin {
                 "net.deadlydiamond98.archipelago.mixin.compat.create.ChuteBlockEntityMixin",
                 "net.deadlydiamond98.archipelago.mixin.compat.create.FunnelBlockEntityMixin",
                 "net.deadlydiamond98.archipelago.mixin.compat.create.AbstractFunnelBlockMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.PackagerBlockEntityMixin",
+                "net.deadlydiamond98.archipelago.mixin.compat.create.RepackagerBlockEntityMixin",
         };
         Supplier<Boolean> createLoadedSupplier = () -> APMod.isModLoaded("create");
         for (String createMixin : createMixins) {

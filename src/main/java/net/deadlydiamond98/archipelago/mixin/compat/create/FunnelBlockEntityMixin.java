@@ -29,10 +29,7 @@ import java.util.List;
 import java.util.Optional;
 
 @Mixin(FunnelBlockEntity.class)
-public abstract class FunnelBlockEntityMixin extends SmartBlockEntity implements IDisplayableRequirementAccessor, IHaveHoveringInformation {
-    @Unique
-    @NotNull
-    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateItemTransportAPRequirement(this);
+public abstract class FunnelBlockEntityMixin extends SmartBlockEntity {
     @Unique
     private final static Object PAUSED;
 
@@ -56,21 +53,6 @@ public abstract class FunnelBlockEntityMixin extends SmartBlockEntity implements
 
     public FunnelBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    @Override
-    public @NotNull CreateDisplayableAPRequirement archipelago$getDisplayableRequirement() {
-        return archipelago$displayableRequirement;
-    }
-
-    @Override
-    public void archipelago$setDisplayableRequirement(@NotNull CreateDisplayableAPRequirement requirement) {
-        archipelago$displayableRequirement = requirement;
-    }
-
-    @Override
-    public boolean addToTooltip(List<Text> tooltip, boolean isPlayerSneaking) {
-        return archipelago$displayableRequirement.addToTooltip(tooltip, isPlayerSneaking);
     }
 
     @Coerce

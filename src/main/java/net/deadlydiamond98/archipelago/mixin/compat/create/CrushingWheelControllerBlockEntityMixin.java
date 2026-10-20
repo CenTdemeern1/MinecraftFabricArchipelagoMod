@@ -33,28 +33,9 @@ import java.util.List;
 import java.util.Optional;
 
 @Mixin(CrushingWheelControllerBlockEntity.class)
-public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlockEntity implements IDisplayableRequirementAccessor, IHaveHoveringInformation {
-    @Unique
-    @NotNull
-    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateOutputFilterAPRequirement(this);
-
+public abstract class CrushingWheelControllerBlockEntityMixin extends SmartBlockEntity {
     public CrushingWheelControllerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    @Override
-    public @NotNull CreateDisplayableAPRequirement archipelago$getDisplayableRequirement() {
-        return archipelago$displayableRequirement;
-    }
-
-    @Override
-    public void archipelago$setDisplayableRequirement(@NotNull CreateDisplayableAPRequirement requirement) {
-        archipelago$displayableRequirement = requirement;
-    }
-
-    @Override
-    public boolean addToTooltip(List<Text> tooltip, boolean isPlayerSneaking) {
-        return archipelago$displayableRequirement.addToTooltip(tooltip, isPlayerSneaking);
     }
 
     @WrapMethod(method = "findRecipe", remap = false)

@@ -3,6 +3,7 @@ package net.deadlydiamond98.archipelago.mixin.compat.create;
 import com.simibubi.create.api.equipment.goggles.IHaveHoveringInformation;
 import com.simibubi.create.content.logistics.packager.PackagerBlockEntity;
 import com.simibubi.create.content.logistics.packager.PackagingRequest;
+import com.simibubi.create.content.logistics.packager.repackager.RepackagerBlockEntity;
 import com.simibubi.create.foundation.blockEntity.SmartBlockEntity;
 import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementKind;
 import net.deadlydiamond98.archipelago.compat.create.CreateAPRequirementUtil;
@@ -30,29 +31,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import java.util.List;
 import java.util.Optional;
 
-@Mixin(PackagerBlockEntity.class)
-public abstract class PackagerBlockEntityMixin extends SmartBlockEntity implements IDisplayableRequirementAccessor, IHaveHoveringInformation {
-    @Unique
-    @NotNull
-    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateItemTransportAPRequirement(this);
-
+@Mixin({PackagerBlockEntity.class, RepackagerBlockEntity.class})
+public abstract class PackagerBlockEntityMixin extends SmartBlockEntity {
     public PackagerBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    @Override
-    public @NotNull CreateDisplayableAPRequirement archipelago$getDisplayableRequirement() {
-        return archipelago$displayableRequirement;
-    }
-
-    @Override
-    public void archipelago$setDisplayableRequirement(@NotNull CreateDisplayableAPRequirement requirement) {
-        archipelago$displayableRequirement = requirement;
-    }
-
-    @Override
-    public boolean addToTooltip(List<Text> tooltip, boolean isPlayerSneaking) {
-        return archipelago$displayableRequirement.addToTooltip(tooltip, isPlayerSneaking);
     }
 
     @Unique

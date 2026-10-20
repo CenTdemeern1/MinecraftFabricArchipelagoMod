@@ -38,10 +38,7 @@ import java.util.Optional;
 import java.util.stream.Stream;
 
 @Mixin(ChuteBlockEntity.class)
-public abstract class ChuteBlockEntityMixin extends SmartBlockEntity implements IDisplayableRequirementAccessor, IHaveHoveringInformation {
-    @Unique
-    @NotNull
-    private CreateDisplayableAPRequirement archipelago$displayableRequirement = new CreateItemTransportAPRequirement(this);
+public abstract class ChuteBlockEntityMixin extends SmartBlockEntity {
     @Unique
     private boolean archipelago$noInteractUp = false;
     @Unique
@@ -49,21 +46,6 @@ public abstract class ChuteBlockEntityMixin extends SmartBlockEntity implements 
 
     public ChuteBlockEntityMixin(BlockEntityType<?> type, BlockPos pos, BlockState state) {
         super(type, pos, state);
-    }
-
-    @Override
-    public @NotNull CreateDisplayableAPRequirement archipelago$getDisplayableRequirement() {
-        return archipelago$displayableRequirement;
-    }
-
-    @Override
-    public void archipelago$setDisplayableRequirement(@NotNull CreateDisplayableAPRequirement requirement) {
-        archipelago$displayableRequirement = requirement;
-    }
-
-    @Override
-    public boolean addToTooltip(List<Text> tooltip, boolean isPlayerSneaking) {
-        return archipelago$displayableRequirement.addToTooltip(tooltip, isPlayerSneaking);
     }
 
     @Inject(method = "tick", at = @At(value = "HEAD"), remap = false)

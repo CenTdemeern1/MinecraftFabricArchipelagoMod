@@ -27,7 +27,7 @@ public abstract class CreateSingleAPRequirement extends CreateDisplayableAPRequi
     protected boolean renderTooltip(List<Text> tooltip) {
         if (this.missingAPItems.length == 0) return false;
         APMissingItem missingItem = this.missingAPItems[0];
-        String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name);
+        String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name());
 
         langBuilder()
                 .translate("check.requires_check", itemName)
@@ -37,9 +37,9 @@ public abstract class CreateSingleAPRequirement extends CreateDisplayableAPRequi
         String translationKey = String.format(
                 "archipelago.compat.create.%s.requires_check%s",
                 this.getTranslationSegment(),
-                missingItem.amount == 0 ? "" : ".progressive"
+                missingItem.amount() == 0 ? "" : ".progressive"
         );
-        MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft, itemName, missingItem.amount);
+        MutableText description = Text.translatable(translationKey, missingItem.attemptedCraft(), itemName, missingItem.amount());
         cutAndAddTextComponent(description, tooltip);
 
         return true;

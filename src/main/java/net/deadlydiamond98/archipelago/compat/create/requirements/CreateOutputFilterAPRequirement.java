@@ -55,18 +55,18 @@ public class CreateOutputFilterAPRequirement extends CreateDisplayableAPRequirem
             );
             String reqTranslationKey = String.format(
                     "compat.create.crafting.some_missing.requirement%s",
-                    missingItem.amount == 0 ? "" : ".progressive"
+                    missingItem.amount() == 0 ? "" : ".progressive"
             );
-            String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name);
+            String itemName = SavedArchipelagoItems.ID_TO_NAME_MAP.get(missingItem.name());
             Formatting formatting = missingItem.isStillMissing() ? Formatting.RED : Formatting.GREEN;
 
             tooltip.add(Text.empty());
             langBuilder()
-                    .translate(translationKey, missingItem.attemptedCraft)
+                    .translate(translationKey, missingItem.attemptedCraft())
                     .style(formatting)
                     .forGoggles(tooltip, 2);
             langBuilder()
-                    .translate(reqTranslationKey, itemName, missingItem.amount)
+                    .translate(reqTranslationKey, itemName, missingItem.amount())
                     .style(formatting)
                     .forGoggles(tooltip, 4);
         }

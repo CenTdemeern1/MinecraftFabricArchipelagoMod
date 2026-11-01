@@ -53,7 +53,7 @@ public class APItemAccessUtil {
      */
     public static boolean allowCraftOrUse(@Nullable PlayerEntity player, ItemConvertible item) {
         Optional<APMissingItem> potentialMissingItem = getMissingItemFor(item);
-        potentialMissingItem.ifPresent(missingItem -> sendRequiresText(player, missingItem.name, missingItem.amount));
+        potentialMissingItem.ifPresent(missingItem -> sendRequiresText(player, missingItem.name(), missingItem.amount()));
         return potentialMissingItem.isEmpty();
     }
 

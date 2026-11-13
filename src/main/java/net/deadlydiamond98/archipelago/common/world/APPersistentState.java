@@ -349,7 +349,7 @@ public class APPersistentState extends PersistentState implements IAbilityCheck 
             return manager.getOrCreate(
                     APPersistentState::fromNbt,
                     APPersistentState::new,
-                    "archipelago:persistant_states"
+                    "archipelago"
             );
         });
     }

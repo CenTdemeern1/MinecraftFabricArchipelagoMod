@@ -3,7 +3,7 @@ package net.deadlydiamond98.archipelago.archipelago.items;
 
 import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.items.type.progression.BiomeUnlockAPItem;
-import net.deadlydiamond98.archipelago.archipelago.items.type.progression.PersistantStateAPItem;
+import net.deadlydiamond98.archipelago.archipelago.items.type.progression.PersistentStateAPItem;
 import net.deadlydiamond98.archipelago.archipelago.items.type.progression.StructureUnlockAPItem;
 import net.deadlydiamond98.archipelago.util.APItemAccessUtil;
 
@@ -322,7 +322,7 @@ public class SavedArchipelagoItems {
 
     public static void register(String name, String key, boolean isBool) {
         // Add Check to Items
-        ArchipelagoItems.ITEMS.put(name, new PersistantStateAPItem(key));
+        ArchipelagoItems.ITEMS.put(name, new PersistentStateAPItem(key));
         ID_TO_NAME_MAP.put(key, name);
 
         if (isBool) {

@@ -68,7 +68,7 @@ public abstract class AbstractAPItem {
 
     /**
      * Triggers an event or effect that only happens when the item is initially received, such as sending a Traplink,
-     * or Updating Persistant Data
+     * or updating persistent data
      */
     protected void triggerOneTimeEffect(NetworkItem item, MinecraftServer server) {}
 

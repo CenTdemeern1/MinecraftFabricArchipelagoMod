@@ -64,8 +64,8 @@ public abstract class LivingEntityMixin {
     private void archipelago$clearStatusEffects(CallbackInfoReturnable<Boolean> cir) {
         if (((LivingEntity) (Object) this) instanceof PlayerEntity player) {
             if (!player.isCreative()) {
-                for (StatusEffectInstance removedPersistantEffect : archipelago$removedPersistentEffects) {
-                    this.addStatusEffect(removedPersistantEffect);
+                for (StatusEffectInstance removedPersistentEffect : archipelago$removedPersistentEffects) {
+                    this.addStatusEffect(removedPersistentEffect);
                 }
             }
         }

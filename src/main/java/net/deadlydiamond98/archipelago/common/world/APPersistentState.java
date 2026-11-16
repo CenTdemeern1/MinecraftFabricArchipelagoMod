@@ -1,5 +1,6 @@
 package net.deadlydiamond98.archipelago.common.world;
 
+import net.deadlydiamond98.archipelago.APMod;
 import net.deadlydiamond98.archipelago.archipelago.ArchipelagoGoalHelper;
 import net.deadlydiamond98.archipelago.util.tracker.IAbilityCheck;
 import net.deadlydiamond98.archipelago.archipelago.items.SavedArchipelagoItems;
@@ -349,7 +350,7 @@ public class APPersistentState extends PersistentState implements IAbilityCheck 
             return manager.getOrCreate(
                     APPersistentState::fromNbt,
                     APPersistentState::new,
-                    "archipelago:persistant_states"
+                    APMod.MOD_ID
             );
         });
     }

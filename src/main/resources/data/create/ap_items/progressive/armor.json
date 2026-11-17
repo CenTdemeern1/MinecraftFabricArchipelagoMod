@@ -9,6 +9,11 @@
 
     "create:netherite_backtank": 5,
     "create:netherite_diving_helmet": 5,
-    "create:netherite_diving_boots": 5
+    "create:netherite_diving_boots": 5,
+
+    "minecraft:iron_trapdoor": 5,
+    "minecraft:oak_stairs": 5,
+    "minecraft:oak_slab": 5,
+    "create:crushing_wheel": 5
   }
 }
